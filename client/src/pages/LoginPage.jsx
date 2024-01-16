@@ -1,5 +1,10 @@
+import {useState} from 'react';
 
 export default function LoginPage() {
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
     return (
       <>
         {/*
@@ -30,6 +35,8 @@ export default function LoginPage() {
                 </label>
                 <div className="mt-2">
                   <input
+                    value={email}
+                    onChange={ev => setEmail(ev.target.value)}
                     id="email"
                     name="email"
                     type="email"
@@ -53,6 +60,8 @@ export default function LoginPage() {
                 </div>
                 <div className="mt-2">
                   <input
+                    value={password}
+                    onChange={ev => setPassword(ev.target.value)}
                     id="password"
                     name="password"
                     type="password"
