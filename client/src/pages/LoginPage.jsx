@@ -1,18 +1,35 @@
-import {useState} from 'react';
+import {useState, useContext} from 'react';
+import {Link, Navigate} from 'react-router-dom';
+import axios from 'axios';
+import { UserContext } from '../UserContext';
 
 export default function LoginPage() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [redirect, setRedirect] = useState(false);
+
+    const {setUser} = useContext(UserContext);
 
     async function handleLoginSubmit(ev) {
         ev.preventDefault();
         try {
+            const {data} = await axios.post('/login', {
+                email,
+                password,
+            })
 
+            setUser(data);
+            alert('Login bem-sucedido.')
+            setRedirect(true);
         } catch (e) {
             alert('O login falhou.')
             console.log('Erro: '+e)
         }
+    }
+
+    if (redirect) {
+        return <Navigate to={'/'} />
     }
 
     return (
@@ -38,7 +55,7 @@ export default function LoginPage() {
           </div>
   
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" action="#" method="POST">
+            <form onSubmit={handleLoginSubmit} className="space-y-6" action="#" method="POST">
               <div>
                 <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                   Seu email
