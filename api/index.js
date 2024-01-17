@@ -20,10 +20,13 @@ const jwtSecret = 'minhavelhacomproumeujantarsopauvanozespãorussonocalção'
 
 //Middlewares setup
 
-app.use(cors({credentials: true, origin: 'http://localhost:5173'}));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname+'/uploads'));
+app.use(cors({
+    credentials: true, 
+    origin: 'http://localhost:5173'
+}));
 
 
 //MongoDB connection goes here
