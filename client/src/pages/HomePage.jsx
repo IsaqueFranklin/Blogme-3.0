@@ -20,7 +20,9 @@ export default function HomePage() {
     };
 
     if (ready && !user && !redirect) {
-        return <Navigate to={'/login'} />
+        return (
+            <div>Home Page!</div>
+        )
     };
 
     if (redirect) {
@@ -39,8 +41,4 @@ export default function HomePage() {
             </div>
         )
     }
-
-    return (
-        <div>Home Page!</div>
-    )
 }

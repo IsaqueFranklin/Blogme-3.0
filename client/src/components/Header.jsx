@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useContext } from 'react'
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import {
   ArrowPathIcon,
@@ -10,6 +10,9 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+import { UserContext } from '../UserContext';
+import { Navigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -28,7 +31,16 @@ function classNames(...classes) {
 }
 
 export default function Header() {
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  const {ready, user, setUser} = useContext(UserContext);
+
+  async function logout() {
+    await axios.post('/logout');
+    //setRedirect('/');
+    setUser(null);
+  }
 
   return (
     <header className="bg-white">
@@ -112,9 +124,14 @@ export default function Header() {
           </a>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="/login" className="text-sm font-semibold leading-6 text-gray-900">
-            Login <span aria-hidden="true">&rarr;</span>
-          </a>
+          {user ? 
+            (<button href="/login" onClick={logout} className="bg-white text-sm font-semibold leading-6 text-gray-900">
+                Logout <span aria-hidden="true">&rarr;</span>
+            </button>)
+          : 
+            (<a href="/login" className="text-sm font-semibold leading-6 text-gray-900">
+                Login <span aria-hidden="true">&rarr;</span>
+            </a>)}
         </div>
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
