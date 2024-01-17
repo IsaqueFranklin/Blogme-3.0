@@ -8,6 +8,7 @@ import LandingPage from './pages/LandingPage';
 import './App.css'
 import axios from 'axios';
 import { UserContextProvider } from './UserContext';
+import PublicarPage from './pages/PublicarPage';
 
 axios.defaults.baseURL = 'http://localhost:4000';
 axios.defaults.withCredentials = true;
@@ -22,6 +23,7 @@ function App() {
             <Route path='/login' element={ <LoginPage /> } />
             <Route path='/register' element={ <RegisterPage /> } />
             <Route path='/start' element={ <LandingPage /> } />
+            <Route path='/publicar' element={ <PublicarPage /> } />
           </Route>
         </Routes>
       </UserContextProvider>
