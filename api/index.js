@@ -38,6 +38,17 @@ mongoose.connect(process.env.MONGO_URL).then((response) => {
     console.log('Erro: '+err);
 })
 
+//Get user data from token for private routes
+
+function getUserDataFromReq(req) {
+    return new Promise((resolve, reject) => {
+        jwt.verify(req.cookies.token, jwtSecret, {}, async (err, userData) => {
+            if (err) throw err;
+            resolve(userData);
+        });
+    })
+}
+
 //Here are the routes
 
 app.post('/cadastro', async (req, res) => {
@@ -121,6 +132,22 @@ app.post('/upload', photosMiddleware.array('photos', 100), (req, res) => {
     res.json(uploadedFiles);
 })
 
+app.post('/publicar', async (req, res) => {
+    const userData = await getUserDataFromReq(req);
+    const {
+        title, description, addedPhotos, 
+        content, dia
+    } = req.body;
+
+    Post.create({
+        title, description, addedPhotos, 
+        content, dia, owner:userData.id,
+    }).then((doc) => {
+        res.json(doc);
+    }).catch((err => {
+        throw err;
+    }))
+})
 
 //Starting the server
 

@@ -20,6 +20,7 @@ export default function PhotosUploader({addedPhotos, onChange}) {
     }
 
     function uploadPhoto(ev) {
+        ev.preventDefault();
         const files = ev.target.files;
         const data = new FormData();
         for (let i = 0; i < files.length; i++) {
