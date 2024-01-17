@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, Navigate} from 'react-router-dom';
 import axios from 'axios';
 
 export default function RegisterPage() {
@@ -7,6 +7,7 @@ export default function RegisterPage() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [redirect, setRedirect] = useState(null);
 
     async function registerUser(ev) {
         ev.preventDefault();
@@ -16,11 +17,18 @@ export default function RegisterPage() {
                 email,
                 password,
             });
+            setRedirect('/login')
             alert('O cadastro foi bem sucedido, faça seu login novamente.')
         } catch (e) {
             console.log(e);
             alert('O cadastro falhou, tente novamente mais tarde.')
         }
+    }
+
+    if (redirect) {
+        return (
+            <Navigate to={redirect} />
+        )
     }
 
     return (

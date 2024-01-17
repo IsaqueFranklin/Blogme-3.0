@@ -5,6 +5,16 @@ export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    async function handleLoginSubmit(ev) {
+        ev.preventDefault();
+        try {
+
+        } catch (e) {
+            alert('O login falhou.')
+            console.log('Erro: '+e)
+        }
+    }
+
     return (
       <>
         {/*
