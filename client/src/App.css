@@ -1,0 +1,40 @@
+div.post{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  
+  @media screen and (min-width: 700px) {
+    div.post{
+        grid-template-columns: .9fr 1.1fr;
+    }
+  }
+  
+  div.post div.texts h2{
+    margin: 0;
+    font-size: 1.6rem;
+  }
+  
+  div.post div.texts a{
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  div.post p.info {
+    margin: 6px 0;
+    color: #333;
+    font-size: .8rem;
+    font-weight: bold;
+    display: flex;
+    gap: 10px;
+  }
+  
+  div.post p.info a.author {
+    color: #333;
+  }
+  
+  div.post p.summary {
+    margin: 10px 0;
+    line-height: 1.4rem;
+  }

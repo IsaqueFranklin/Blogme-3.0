@@ -30,8 +30,7 @@ export default function HomePage() {
 
     if (ready && !user && !redirect) {
         return (
-            <div className='mt-8 gap-x-6 gap-y-8 md:grid lg:grid md:grid-cols-3 lg:grid-cols-4'>
-                <p></p>
+            <div className='mt-8 gap-x-6 gap-y-8 md:grid lg:grid md:grid-cols-4 lg:grid-cols-4'>
                 {places?.length > 0 && places?.map((post,i) => {
                     return (
                         <Link to={'/post/'+post._id} key={i}>
@@ -40,9 +39,9 @@ export default function HomePage() {
                                 <img className='rounded-2xl object-cover aspect-square' src={'http://localhost:4000/uploads/'+post.photos?.[0]} />
                             )}
                         </div>
-                        <h2 className='font-bold'>{post.description}</h2>
-                        <h3 className='text-sm text-gray-900'>{post.title}</h3>  
-                        <div className='content' dangerouslySetInnerHTML={{__html:post.content}} />    
+                        <h2 className='font-bold'>{post.title}</h2>
+                        <h3 className='text-sm text-gray-900'>{post.description}</h3>  
+                        {/*<div className='content' dangerouslySetInnerHTML={{__html:post.content}} /> */}   
                     </Link>
                     )
                 })}
@@ -63,23 +62,24 @@ export default function HomePage() {
                     Logged in as {user.name} ({user.email}) <br/>
                     <button onClick={logout} className="primary max-w-sm mt-2">Logout</button>
                 </div>
-                <div className='mt-8 gap-x-6 gap-y-8 md:grid lg:grid md:grid-cols-3 lg:grid-cols-4'>
-                <p></p>
-                {places?.length > 0 && places?.map((post, i ) => {
+                <div className='mt-8 gap-x-6 gap-y-8 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4'>
+                {places?.length > 0 && places?.map((post,i) => {
                     return (
-                        <Link to={'/'+post._id} key={i}>
+                        <Link to={'/post/'+post._id} key={i}>
                         <div className='bg-gray-500 mb-2 rounded-2xl flex'>
                             {post.photos?.[0] && (
                                 <img className='rounded-2xl object-cover aspect-square' src={'http://localhost:4000/uploads/'+post.photos?.[0]} />
                             )}
                         </div>
-                        <h2 className='font-bold'>{post.description}</h2>
-                        <h3 className='text-sm text-gray-900'>{post.title}</h3>      
+                        <h2 className='font-bold'>{post.title}</h2>
+                        <h3 className='text-sm text-gray-900'>{post.description}</h3>  
+                        {/*<div className='content' dangerouslySetInnerHTML={{__html:post.content}} /> */}   
                     </Link>
                     )
                 })}
             </div>
             </div>
+
         )
     }
 }
