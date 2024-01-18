@@ -78,7 +78,7 @@ export default function PublicarPage() {
 
     return (
         <div>
-            <form>
+            <form onSubmit={savePost}>
                 <h2 className='text-2xl mt-4'>Título da sua publicação</h2>
                 <input type="text" value={title} onChange={ev => setTitle(ev.target.value)} placeholder='Um título de cair as calças...' />
 
@@ -89,11 +89,10 @@ export default function PublicarPage() {
                         <PhotosUploader addedPhotos={addedPhotos} onChange={setAddedPhotos} />
 
                         <h2 className='text-2xl mt-4'>Escreva aqui</h2>
-                        <ReactQuill 
-                            className='min-h-screen'
+                        <ReactQuill
                             value={content} 
                             theme={'snow'}
-                            onChange={ev => setContent(ev.target.value)} 
+                            onChange={setContent} 
                             modules={modules} 
                             formats={formats} 
                         />

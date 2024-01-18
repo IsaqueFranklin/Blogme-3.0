@@ -140,13 +140,17 @@ app.post('/publicar', async (req, res) => {
     } = req.body;
 
     Post.create({
-        title, description, addedPhotos, 
+        title, description, photos:addedPhotos, 
         content, dia, owner:userData.id,
     }).then((doc) => {
         res.json(doc);
     }).catch((err => {
         throw err;
     }))
+})
+
+app.get('/posts', async (req, res) => {
+    res.json(await Post.find());
 })
 
 //Starting the server
