@@ -39,6 +39,20 @@ export default function PublicarPage() {
 
     const [redirect, setRedirect] = useState(false);
 
+    useEffect(() => {
+        if(!id) {
+            return;
+        }
+
+        axios.get('/post/'+id).then(response => {
+            const {data} = response;
+            setTitle(data.title);
+            setDescription(data.description);
+            setAddedPhotos(data.photos);
+            setContent(data.content);
+        })
+    }, [id])
+
 
     if (!ready) {
         return 'Carregando...'

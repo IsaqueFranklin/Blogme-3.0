@@ -25,6 +25,7 @@ function App() {
             <Route path='/register' element={ <RegisterPage /> } />
             <Route path='/start' element={ <LandingPage /> } />
             <Route path='/publicar' element={ <PublicarPage /> } />
+            <Route path='/publicar/:id' element={ <PublicarPage /> } />
             <Route path='/post/:id' element={ <ReadPage /> } />
           </Route>
         </Routes>

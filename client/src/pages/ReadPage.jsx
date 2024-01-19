@@ -29,7 +29,7 @@ export default function ReadPage() {
     return (
         <div className='mt-4 lg:px-8 sm:px-2 pt-8'>
             {user?._id == post.owner ? (
-                <a href={'/editar/'+id} className="hover:no-undeline"><button className="primary max-w-sm mt-2 mb-8">Editar</button></a>
+                <a href={'/publicar/'+id} className="hover:no-undeline"><button className="primary max-w-sm mt-2 mb-8">Editar</button></a>
             ) : ('')}
             <div className='flex'>
                 <div className='rounded-2xl overflow-hidden'>
