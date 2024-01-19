@@ -153,6 +153,11 @@ app.get('/posts', async (req, res) => {
     res.json(await Post.find());
 })
 
+app.get('/post/:id', async (req, res) => {
+    const {id} = req.params;
+    res.json(await Post.findById(id));
+})
+
 //Starting the server
 
 app.listen(4000, () => {
