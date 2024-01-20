@@ -30,7 +30,7 @@ export default function HomePage() {
 
     if (ready && !user && !redirect) {
         return (
-            <div className='mt-8 gap-x-6 gap-y-8 md:grid lg:grid md:grid-cols-4 lg:grid-cols-4'>
+            <div className='mt-8 gap-x-6 gap-y-8 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4'>
                 {places?.length > 0 && places?.map((post,i) => {
                     return (
                         <Link to={'/post/'+post._id} key={i}>
@@ -57,6 +57,7 @@ export default function HomePage() {
         return (
             <div>
                 <h2>{user.name}</h2>
+                <p>{user.username}</p>
                 <p>{user.email}</p>
                 <div className="text-center max-w-lg mx-auto">
                     Logged in as {user.name} ({user.email}) <br/>
@@ -65,14 +66,14 @@ export default function HomePage() {
                 <div className='mt-8 gap-x-6 gap-y-8 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4'>
                 {places?.length > 0 && places?.map((post,i) => {
                     return (
-                        <Link to={'/post/'+post._id} key={i}>
+                        <Link to={'/post/'+post._id+'/'+post.title.split(' ').join('-')} key={i}>
                         <div className='bg-gray-500 mb-2 rounded-2xl flex'>
                             {post.photos?.[0] && (
                                 <img className='rounded-2xl object-cover aspect-square' src={'http://localhost:4000/uploads/'+post.photos?.[0]} />
                             )}
                         </div>
                         <h2 className='font-bold'>{post.title}</h2>
-                        <h3 className='text-sm text-gray-900'>{post.description}</h3>  
+                        <h3 className='text-sm text-gray-900'>{post.description}</h3> 
                         {/*<div className='content' dangerouslySetInnerHTML={{__html:post.content}} /> */}   
                     </Link>
                     )

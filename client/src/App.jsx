@@ -10,6 +10,7 @@ import PublicarPage from './pages/PublicarPage';
 import './App.css'
 import axios from 'axios';
 import { UserContextProvider } from './UserContext';
+import ProfilePage from './pages/ProfilePage';
 
 axios.defaults.baseURL = 'http://localhost:4000';
 axios.defaults.withCredentials = true;
@@ -26,7 +27,8 @@ function App() {
             <Route path='/start' element={ <LandingPage /> } />
             <Route path='/publicar' element={ <PublicarPage /> } />
             <Route path='/publicar/:id' element={ <PublicarPage /> } />
-            <Route path='/post/:id' element={ <ReadPage /> } />
+            <Route path='/post/:id/:title' element={ <ReadPage /> } />
+            <Route path='/perfil/:id/:username' element={ <ProfilePage /> } />
           </Route>
         </Routes>
       </UserContextProvider>

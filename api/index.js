@@ -52,10 +52,11 @@ function getUserDataFromReq(req) {
 //Here are the routes
 
 app.post('/cadastro', async (req, res) => {
-    const {name, email, password} = req.body;
+    const {name, username, email, password} = req.body;
     try {
         const userDoc = await User.create({
             name, 
+            username,
             email,
             password:bcrypt.hashSync(password, salt),
         })
@@ -170,13 +171,14 @@ app.put('/publicar', async (req, res) => {
 })
 
 app.get('/posts', async (req, res) => {
-    res.json(await Post.find());
+    res.json(await Post.find().populate('owner', ['username']).sort({createdAt: -1}));
 })
 
 app.get('/post/:id', async (req, res) => {
     const {id} = req.params;
-    res.json(await Post.findById(id));
+    res.json(await Post.findById(id).populate('owner', ['username']));
 })
+
 
 //Starting the server
 

@@ -5,6 +5,7 @@ import axios from 'axios';
 export default function RegisterPage() {
 
     const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [redirect, setRedirect] = useState(null);
@@ -14,6 +15,7 @@ export default function RegisterPage() {
         try {
             await axios.post('/cadastro', {
                 name,
+                username,
                 email,
                 password,
             });
@@ -63,6 +65,22 @@ export default function RegisterPage() {
                   <input
                     value={name}
                     onChange={ev => setName(ev.target.value)}
+                    id="name"
+                    name="name"
+                    type="text"
+                    required
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                  Seu nome de usuário (username)
+                </label>
+                <div className="mt-2">
+                  <input
+                    value={username}
+                    onChange={ev => setUsername(ev.target.value)}
                     id="name"
                     name="name"
                     type="text"
