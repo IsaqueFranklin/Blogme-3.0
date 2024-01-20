@@ -184,6 +184,15 @@ app.get('/perfil-externo/:id', async (req, res) => {
     res.json(await User.findById(id));
 })
 
+app.post('/deletar', async (req, res) => {
+    const userData = await getUserDataFromReq(req);
+    const {_id} = req.body;
+    const algo = await Post.deleteOne({_id});
+
+    console.log(algo)
+    res.json(algo)
+})
+
 //Starting the server
 
 app.listen(4000, () => {

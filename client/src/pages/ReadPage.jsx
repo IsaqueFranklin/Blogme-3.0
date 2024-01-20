@@ -10,6 +10,8 @@ export default function ReadPage() {
 
     const {id} = useParams();
     const [post, setPost] = useState(null);
+    const [modal, setModal] = useState(false);
+    const [redirect, setRedirect] = useState(false);
 
     useEffect(() => {
         if (!id) {
@@ -23,8 +25,28 @@ export default function ReadPage() {
 
     if (!post) return '';
 
-    function editPost() {
-        return <Navigate to={'/editar/'+id} />;
+    async function deletePost(ev) {
+        ev.preventDefault();
+        if (id) {
+            await axios.post('/deletar/', {
+                id, ...post
+            })
+            setRedirect(true);
+        }
+    }
+
+    if (redirect) {
+        return <Navigate to={'/'} />
+    }
+
+    if(modal) {
+        return (
+            <div>
+                <h2>Tem certeza que deseja deletar a publicação?</h2>
+                <button onClick={deletePost} className="primary max-w-sm mt-2 mb-8">Sim</button>
+                <button onClick={ev => setModal(false)} className="primary max-w-sm mt-2 mb-8">Cancelar</button>
+            </div>
+        )
     }
 
     return (
@@ -33,7 +55,11 @@ export default function ReadPage() {
             <p className="">Escrito em {format(new Date(post.dia), 'dd/MM/yyyy')}</p>
             {/*<p className="">Último modificado em {format(new Date(post.modific), 'dd/MM/yyyy')}</p>*/}
             {user?._id == post.owner._id ? (
-                <a href={'/publicar/'+id} className="hover:no-undeline"><button className="primary max-w-sm mt-2 mb-8">Editar</button></a>
+               <div>
+                    <a href={'/publicar/'+id} className="hover:no-undeline"><button className="primary max-w-sm mt-2 mb-8">Editar</button></a>
+                    <button onClick={ev => setModal(true)} className="primary max-w-sm mt-2 mb-8">Deletar</button>
+               </div>
+
             ) : ('')}
             <div className='flex'>
                 <div className='rounded-2xl overflow-hidden'>
