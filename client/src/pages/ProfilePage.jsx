@@ -29,16 +29,19 @@ export default function ProfilePage() {
 
     return (
         <div className=''>
-            <img src="" className="" />
+            <img className='rounded-2xl object-cover aspect-square' src={'http://localhost:4000/uploads/'+usuario?.photo} />
             <div>
                 <h2>{usuario.username}</h2>
                 <h3>{usuario.name}</h3>
+                <h3>{usuario.bio}</h3>
             </div>
-            <button>Editar perfil</button>
             {usuario?._id != user?._id ? (
-                <button>Seguir</button>
+                <button className="success max-w-sm mt-2 mb-8">Seguir</button>
             ) : (
-                <button>Virar premium</button>
+                <div>
+                    <a href={'/editar/'+user._id+'/'+user.username}><button className="py-2 px-4 rounded rounded-2xl bg-black text-white max-w-sm mt-2 mb-8 mx-4">Editar perfil</button></a>
+                    <a><button className="py-2 px-4 rounded rounded-2xl bg-gray-800 text-white max-w-sm mt-2 mb-8 mx-4">Virar premium</button></a>
+                </div>
             )}
         </div>
     )

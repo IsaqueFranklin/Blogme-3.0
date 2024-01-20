@@ -196,6 +196,29 @@ app.get('/users', async (req, res) => {
     res.json(await User.find());
 })
 
+app.get('/edit-profile/:id', async (req, res) => {
+    const {id} = req.params;
+    res.json(await User.findById(id))
+})
+
+app.put('/edit-profile', async (req, res) => {
+    const userData = await getUserDataFromReq(req);
+    const {
+        id, name, bio, addedPhoto
+    } = req.body;
+
+    const userDoc = await User.findById(id);
+
+    if(userData.id === userDoc._id.toString()) {
+        userDoc.set({
+            name, bio, photo:addedPhoto,
+        })
+    }
+
+    await userDoc.save();
+    res.json(userDoc);
+})
+
 //Starting the server
 
 app.listen(4000, () => {

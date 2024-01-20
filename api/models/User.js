@@ -5,6 +5,7 @@ const UserSchema = new Schema({
     name: String,
     username: {type:String, unique:true},
     email: {type:String, unique:true},
+    bio: String,
     password: String,
     photo: [String],
     following: [mongoose.Schema.Types.ObjectId],

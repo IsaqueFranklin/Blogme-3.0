@@ -11,6 +11,7 @@ import './App.css'
 import axios from 'axios';
 import { UserContextProvider } from './UserContext';
 import ProfilePage from './pages/ProfilePage';
+import EditProfilePage from './pages/EditProfilePage';
 
 axios.defaults.baseURL = 'http://localhost:4000';
 axios.defaults.withCredentials = true;
@@ -29,6 +30,7 @@ function App() {
             <Route path='/publicar/:id' element={ <PublicarPage /> } />
             <Route path='/post/:id/:title' element={ <ReadPage /> } />
             <Route path='/perfil/:username' element={ <ProfilePage /> } />
+            <Route path='/editar/:id/:username' element={ <EditProfilePage /> } />
           </Route>
         </Routes>
       </UserContextProvider>
