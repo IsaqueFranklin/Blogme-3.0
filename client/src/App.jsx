@@ -28,7 +28,7 @@ function App() {
             <Route path='/publicar' element={ <PublicarPage /> } />
             <Route path='/publicar/:id' element={ <PublicarPage /> } />
             <Route path='/post/:id/:title' element={ <ReadPage /> } />
-            <Route path='/perfil/:id/:username' element={ <ProfilePage /> } />
+            <Route path='/perfil/:username' element={ <ProfilePage /> } />
           </Route>
         </Routes>
       </UserContextProvider>

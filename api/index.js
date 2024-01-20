@@ -179,9 +179,9 @@ app.get('/post/:id', async (req, res) => {
     res.json(await Post.findById(id).populate('owner', ['username', 'name', 'email']));
 })
 
-app.get('/perfil-externo/:id', async (req, res) => {
-    const {id} = req.params;
-    res.json(await User.findById(id));
+app.get('/perfil-externo/:username', async (req, res) => {
+    const {username} = req.params;
+    res.json(await User.findOne({username}));
 })
 
 app.post('/deletar', async (req, res) => {
@@ -189,8 +189,11 @@ app.post('/deletar', async (req, res) => {
     const {_id} = req.body;
     const algo = await Post.deleteOne({_id});
 
-    console.log(algo)
     res.json(algo)
+})
+
+app.get('/users', async (req, res) => {
+    res.json(await User.find());
 })
 
 //Starting the server

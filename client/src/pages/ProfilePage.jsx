@@ -5,26 +5,21 @@ import axios from 'axios';
 
 export default function ProfilePage() {
 
-    const {id} = useParams();
+    const {username} = useParams();
     const {ready, user, setUser} = useContext(UserContext);
 
     const [usuario, setUsuario] = useState(null)
 
     useEffect(() => {
-        if (!id) {
+        if (!username) {
             return 'merda';
         }
 
-        axios.get('/perfil-externo/'+id).then(response => {
+        axios.get('/perfil-externo/'+username).then(response => {
             setUsuario(response.data);
         })
-    }, [id])
+    }, [username])
 
-    if(!user) {
-        return (
-            <div>Carregando...</div>
-        )
-    }
 
     if(!usuario) {
         return (

@@ -9,6 +9,7 @@ const UserSchema = new Schema({
     photo: [String],
     following: [mongoose.Schema.Types.ObjectId],
     followers: [mongoose.Schema.Types.ObjectId],
+    emailList: [String],
 })
 
 const UserModel = mongoose.model('User', UserSchema);

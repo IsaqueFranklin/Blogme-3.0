@@ -22,6 +22,7 @@ export default function HomePage() {
         await axios.post('/logout');
         setRedirect('/');
         setUser(null);
+        window.location.reload();
     }
 
     if (!ready) {
@@ -33,7 +34,7 @@ export default function HomePage() {
             <div className='mt-8 gap-x-6 gap-y-8 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4'>
                 {places?.length > 0 && places?.map((post,i) => {
                     return (
-                        <Link to={'/post/'+post._id} key={i}>
+                        <Link to={'/post/'+post._id+'/'+post.title.split(' ').join('-')} key={i}>
                         <div className='bg-gray-500 mb-2 rounded-2xl flex'>
                             {post.photos?.[0] && (
                                 <img className='rounded-2xl object-cover aspect-square' src={'http://localhost:4000/uploads/'+post.photos?.[0]} />
@@ -59,7 +60,7 @@ export default function HomePage() {
                 <h2>{user.name}</h2>
                 <p>{user.username}</p>
                 <p>{user.email}</p>
-                <Link to={'/perfil/'+user._id+'/'+user.username}>
+                <Link to={'/perfil/'+user.username}>
                     <button>Ir ao perfil</button>
                 </Link>
                 <div className="text-center max-w-lg mx-auto">

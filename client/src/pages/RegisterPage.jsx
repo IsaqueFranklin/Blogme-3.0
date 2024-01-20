@@ -1,18 +1,58 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Link, Navigate} from 'react-router-dom';
 import axios from 'axios';
 
 export default function RegisterPage() {
 
+    //Para preenchimento dos formulários.
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [redirect, setRedirect] = useState(null);
 
+    //Para validação dos dados.
+    const [users, setUsers] = useState([]);
+    const [repeatedUsername, setRepeatedUsername] = useState(false);
+    const [repeatedEmail, setRepeatedEmail] = useState(false);
+    const [senhatamanho, setSenhatamanho] = useState(false);
+
+    useEffect(() => {
+      axios.get('/users').then(response => {
+        setUsers(response.data);
+        matchUsername();
+        matchEmail();
+      })
+    })
+
+    function matchUsername() {
+      users?.map((u) => {
+        if (u.username != username) {
+          setRepeatedUsername(false);
+        } else {
+          setRepeatedUsername(true);
+          setNoregister(true);
+        }
+      })
+    }
+
+    function matchEmail() {
+      users?.map((u) => {
+        if (u.email != email) {
+          setRepeatedEmail(false);
+        } else {
+          setRepeatedEmail(true);
+          setNoregister(true);
+        }
+      })
+    }
+
     async function registerUser(ev) {
         ev.preventDefault();
-        try {
+        if(repeatedUsername || repeatedEmail) {
+          return;
+        } else {
+          try {
             await axios.post('/cadastro', {
                 name,
                 username,
@@ -21,9 +61,10 @@ export default function RegisterPage() {
             });
             setRedirect('/login')
             alert('O cadastro foi bem sucedido, faça seu login novamente.')
-        } catch (e) {
-            console.log(e);
-            alert('O cadastro falhou, tente novamente mais tarde.')
+          } catch (e) {
+              console.log(e);
+              alert('O cadastro falhou, tente novamente mais tarde.')
+          }
         }
     }
 
@@ -80,13 +121,16 @@ export default function RegisterPage() {
                 <div className="mt-2">
                   <input
                     value={username}
-                    onChange={ev => setUsername(ev.target.value)}
+                    onChange={ev => (setUsername(ev.target.value))}
                     id="name"
                     name="name"
                     type="text"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
+                  {repeatedUsername ? (
+                    <p className='text-primary font-semibold text-sm'>Esse nome de usuário já existe.</p>
+                  ) : ''}
                 </div>
               </div>
               <div>
@@ -104,6 +148,9 @@ export default function RegisterPage() {
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
+                  {repeatedEmail ? (
+                    <p className='text-primary font-semibold text-sm'>Esse email já existe.</p>
+                  ) : ''}
                 </div>
               </div>
   
@@ -133,12 +180,16 @@ export default function RegisterPage() {
               </div>
   
               <div>
-                <button
-                  type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  Criar conta
-                </button>
+                {repeatedEmail || repeatedUsername ? (
+                  <p className='text-primary font-semibold'>Seu email ou username já existem, por favor escolha outros.</p>
+                ) : (
+                  <button
+                    type="submit"
+                    className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Criar conta
+                  </button>
+                )}
               </div>
             </form>
   
