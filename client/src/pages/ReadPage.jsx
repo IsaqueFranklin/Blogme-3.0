@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useParams, Navigate } from "react-router-dom"
 import { UserContext } from '../UserContext';
 import axios from 'axios';
+import { format } from "date-fns";
 
 export default function ReadPage() {
 
@@ -28,7 +29,10 @@ export default function ReadPage() {
 
     return (
         <div className='mt-4 lg:px-8 sm:px-2 pt-8'>
-            {user?._id == post.owner ? (
+            <p className="">{post.owner.name}</p>
+            <p className="">Escrito em {format(new Date(post.dia), 'dd/MM/yyyy')}</p>
+            {/*<p className="">Último modificado em {format(new Date(post.modific), 'dd/MM/yyyy')}</p>*/}
+            {user?._id == post.owner._id ? (
                 <a href={'/publicar/'+id} className="hover:no-undeline"><button className="primary max-w-sm mt-2 mb-8">Editar</button></a>
             ) : ('')}
             <div className='flex'>

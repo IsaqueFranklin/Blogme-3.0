@@ -59,6 +59,9 @@ export default function HomePage() {
                 <h2>{user.name}</h2>
                 <p>{user.username}</p>
                 <p>{user.email}</p>
+                <Link to={'/perfil/'+user._id+'/'+user.username}>
+                    <button>Ir ao perfil</button>
+                </Link>
                 <div className="text-center max-w-lg mx-auto">
                     Logged in as {user.name} ({user.email}) <br/>
                     <button onClick={logout} className="primary max-w-sm mt-2">Logout</button>

@@ -94,8 +94,8 @@ app.get('/profile', (req, res) => {
     if (token) {
         jwt.verify(token, jwtSecret, {}, async (err, userData) => {
             if (err) throw err;
-            const {name, email, _id} = await User.findById(userData.id);
-            res.json({name, email, _id});
+            const {name, username, photo, email, _id} = await User.findById(userData.id);
+            res.json({name, username, photo, email, _id});
         })
     } else {
         res.json(null)
@@ -162,7 +162,7 @@ app.put('/publicar', async (req, res) => {
     if(userData.id === postDoc.owner.toString()) {
         postDoc.set({
             title, description, photos:addedPhotos, 
-            content, dia, owner:userData.id,
+            content, modific:dia, owner:userData.id,
         })
     }
 
@@ -176,9 +176,13 @@ app.get('/posts', async (req, res) => {
 
 app.get('/post/:id', async (req, res) => {
     const {id} = req.params;
-    res.json(await Post.findById(id).populate('owner', ['username']));
+    res.json(await Post.findById(id).populate('owner', ['username', 'name', 'email']));
 })
 
+app.get('/perfil-externo/:id', async (req, res) => {
+    const {id} = req.params;
+    res.json(await User.findById(id));
+})
 
 //Starting the server
 

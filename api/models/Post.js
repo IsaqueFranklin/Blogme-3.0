@@ -7,6 +7,7 @@ const PostSchema = new mongoose.Schema({
     content: String,
     photos: [String],
     dia: Date,
+    modific: Date,
 });
 
 const PostModel = mongoose.model('post', PostSchema);
