@@ -41,27 +41,31 @@ export default function ReadPage() {
 
     if(modal) {
         return (
-            <div>
-                <h2>Tem certeza que deseja deletar a publicação?</h2>
-                <button onClick={deletePost} className="primary max-w-sm mt-2 mb-8">Sim</button>
-                <button onClick={ev => setModal(false)} className="primary max-w-sm mt-2 mb-8">Cancelar</button>
+            <div className="items-center my-auto text-center">
+                <h2 className="text-2xl text-[#0047AB] text-center font-semibold mb-8">Tem certeza que deseja deletar a publicação?</h2>
+                <button onClick={deletePost} className="m-1 py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Sim</button>
+                <button onClick={ev => setModal(false)} className="m-1 py-2 px-4 rounded rounded-lg bg-gray-800 text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Cancelar</button>
             </div>
         )
     }
 
     return (
         <div className='mt-4 lg:px-8 sm:px-2 pt-8'>
-            <Link to={'/perfil/'+post.owner.username}><p className="">@{post.owner.username}</p></Link>
-            <p className="">{post.owner.name}</p>
-            <p className="">Escrito em {format(new Date(post.dia), 'dd/MM/yyyy')}</p>
-            {/*<p className="">Último modificado em {format(new Date(post.modific), 'dd/MM/yyyy')}</p>*/}
             {user?._id == post.owner._id ? (
-               <div>
-                    <a href={'/publicar/'+id} className="hover:no-undeline"><button className="primary max-w-sm mt-2 mb-8">Editar</button></a>
-                    <button onClick={ev => setModal(true)} className="primary max-w-sm mt-2 mb-8">Deletar</button>
+               <div className="">
+                    <a href={'/publicar/'+id} className="hover:no-undeline"><button className="m-1 py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Editar</button></a>
+                    <button onClick={ev => setModal(true)} className="m-1 py-2 px-4 rounded rounded-lg bg-gray-800 text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Deletar</button>
                </div>
 
             ) : ('')}
+            <div className="mb-6">
+                <h1 className='text-3xl'>{post.title}</h1>
+                <h2 className='font-normal text-xl mb-6'>{post.description}</h2>
+                <p className="">Escrito em {format(new Date(post.dia), 'dd/MM/yyyy')}</p>
+                {post.modific ? (
+                    <p className="">Último modificado em {format(new Date(post.modific), 'dd/MM/yyyy')}</p>
+                ) : ''}
+            </div>
             <div className='flex'>
                 <div className='rounded-2xl overflow-hidden'>
                     <div>
@@ -74,8 +78,9 @@ export default function ReadPage() {
                 </div>
             </div>
             <div className="my-10">
-                <h1 className='text-3xl'>{post.title}</h1>
-                <h2 className='font-normal text-xl'>{post.description}</h2>
+                <p className="mb-2">Escrito por:</p>
+                <p className="text-xl">{post.owner.name}</p>
+                <Link to={'/perfil/'+post.owner.username}><p className="text-[#0047AB] mb-8">@{post.owner.username}</p></Link>
             </div>
             <div className='content' dangerouslySetInnerHTML={{__html:post.content}} />
         </div>

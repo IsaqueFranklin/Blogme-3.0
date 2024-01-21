@@ -174,6 +174,11 @@ app.get('/posts', async (req, res) => {
     res.json(await Post.find().populate('owner', ['username']).sort({createdAt: -1}));
 })
 
+app.get('/posts/:id', async (req, res) => {
+    const {id} = req.params;
+    res.json(await Post.find({owner: id}));
+})
+
 app.get('/post/:id', async (req, res) => {
     const {id} = req.params;
     res.json(await Post.findById(id).populate('owner', ['username', 'name', 'email']));

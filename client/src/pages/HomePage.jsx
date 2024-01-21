@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../UserContext';
 import { Navigate, useParams, Link } from 'react-router-dom';
 import axios from 'axios';
+import PostsGrid from '../components/PostsGrid';
 
 export default function HomePage() {
 
@@ -31,22 +32,7 @@ export default function HomePage() {
 
     if (ready && !user && !redirect) {
         return (
-            <div className='mt-8 gap-x-6 gap-y-8 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4'>
-                {places?.length > 0 && places?.map((post,i) => {
-                    return (
-                        <Link to={'/post/'+post._id+'/'+post.title.split(' ').join('-')} key={i}>
-                        <div className='bg-gray-500 mb-2 rounded-2xl flex'>
-                            {post.photos?.[0] && (
-                                <img className='rounded-2xl object-cover aspect-square' src={'http://localhost:4000/uploads/'+post.photos?.[0]} />
-                            )}
-                        </div>
-                        <h2 className='font-bold'>{post.title}</h2>
-                        <h3 className='text-sm text-gray-900'>{post.description}</h3>  
-                        {/*<div className='content' dangerouslySetInnerHTML={{__html:post.content}} /> */}   
-                    </Link>
-                    )
-                })}
-            </div>
+            <PostsGrid places={places} />
         )
     };
 
@@ -56,33 +42,28 @@ export default function HomePage() {
 
     if (user) {
         return (
-            <div>
-                <h2>{user.name}</h2>
-                <p>{user.username}</p>
-                <p>{user.email}</p>
-                <Link to={'/perfil/'+user.username}>
-                    <button>Ir ao perfil</button>
-                </Link>
-                <div className="text-center max-w-lg mx-auto">
-                    Logged in as {user.name} ({user.email}) <br/>
-                    <button onClick={logout} className="primary max-w-sm mt-2">Logout</button>
-                </div>
-                <div className='mt-8 gap-x-6 gap-y-8 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4'>
-                {places?.length > 0 && places?.map((post,i) => {
-                    return (
-                        <Link to={'/post/'+post._id+'/'+post.title.split(' ').join('-')} key={i}>
-                        <div className='bg-gray-500 mb-2 rounded-2xl flex'>
-                            {post.photos?.[0] && (
-                                <img className='rounded-2xl object-cover aspect-square' src={'http://localhost:4000/uploads/'+post.photos?.[0]} />
-                            )}
+            <div className='text-center mx-auto'>
+                <div className='border border-gray-800 rounded-2xl p-8'>
+                    <h2 className='text-2xl font-semibold text-[#0047AB] mb-4'>Bem-vindo, {user.name}!</h2>
+                    <h2 className='text-lg'>Logado como {user.name} (@{user.username})</h2>
+                    <p className='text-md mb-6'>Leia as melhores publicações de quem você segue! </p>
+                    <div className="text-center max-w-lg mx-auto">
+                        <div className='grid grid-cols-2 mx-auto -gap-128'>
+                            <div>
+                                <Link>
+                                    <button onClick={logout} className="py-2 px-4 rounded rounded-lg bg-gray-800 text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Logout</button>
+                                </Link>
+                                
+                            </div>
+                            <div>
+                                <Link to={'/perfil/'+user.username}>
+                                    <button className='py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black'>Ir ao perfil</button>
+                                </Link>
+                            </div>
                         </div>
-                        <h2 className='font-bold'>{post.title}</h2>
-                        <h3 className='text-sm text-gray-900'>{post.description}</h3> 
-                        {/*<div className='content' dangerouslySetInnerHTML={{__html:post.content}} /> */}   
-                    </Link>
-                    )
-                })}
-            </div>
+                    </div>
+                </div>
+                <PostsGrid places={places} />
             </div>
 
         )
