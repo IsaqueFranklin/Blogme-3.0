@@ -176,12 +176,12 @@ app.get('/posts', async (req, res) => {
 
 app.get('/posts/:id', async (req, res) => {
     const {id} = req.params;
-    res.json(await Post.find({owner: id}));
+    res.json(await Post.find({owner: id}).sort({createdAt: -1}));
 })
 
 app.get('/post/:id', async (req, res) => {
     const {id} = req.params;
-    res.json(await Post.findById(id).populate('owner', ['username', 'name', 'email']));
+    res.json(await Post.findById(id).populate('owner', ['username', 'name', 'email', 'photo']));
 })
 
 app.get('/perfil-externo/:username', async (req, res) => {

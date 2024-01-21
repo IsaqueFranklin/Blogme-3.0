@@ -91,7 +91,7 @@ export default function EditProfilePage() {
     }
 
     function checkPhotoTam() {
-        if (addedPhoto.length > 6){
+        if (addedPhoto.length > 3){
             setToomany(true);
         } else {
             setToomany(false);

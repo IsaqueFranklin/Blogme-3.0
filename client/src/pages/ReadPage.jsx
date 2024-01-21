@@ -50,7 +50,7 @@ export default function ReadPage() {
     }
 
     return (
-        <div className='mt-4 lg:px-8 sm:px-2 pt-8'>
+        <div className='mt-4 lg:px-8 sm:px-2'>
             {user?._id == post.owner._id ? (
                <div className="">
                     <a href={'/publicar/'+id} className="hover:no-undeline"><button className="m-1 py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Editar</button></a>
@@ -61,9 +61,9 @@ export default function ReadPage() {
             <div className="mb-6">
                 <h1 className='text-3xl'>{post.title}</h1>
                 <h2 className='font-normal text-xl mb-6'>{post.description}</h2>
-                <p className="">Escrito em {format(new Date(post.dia), 'dd/MM/yyyy')}</p>
+                <p className="font-semibold">Escrito em {format(new Date(post.dia), 'dd/MM/yyyy')}</p>
                 {post.modific ? (
-                    <p className="">Último modificado em {format(new Date(post.modific), 'dd/MM/yyyy')}</p>
+                    <p className="font-semibold">Último modificado em {format(new Date(post.modific), 'dd/MM/yyyy')}</p>
                 ) : ''}
             </div>
             <div className='flex'>

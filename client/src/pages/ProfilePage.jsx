@@ -58,7 +58,11 @@ export default function ProfilePage() {
                         )}
                     </div>
                 </div>
-                <h2 className='text-xl text-center'>Destaques</h2>
+                {usuario?._id != user?._id ? (
+                    <h2 className='text-xl text-center'>Fotos em destaque de {usuario.name}</h2>
+                ) : (
+                    <h2 className='text-xl text-center'>Suas fotos em destaque</h2>
+                )}
                 <div className='mx-auto lg:grid lg:grid-cols-3 md:grid md:grid-cols-3 grid grid-cols-3 gap-4 p-6'>
                 {usuario?.photo?.length > 0 && usuario.photo.map((photo, key) => (
                             <div className='mx-auto' key={key}>
