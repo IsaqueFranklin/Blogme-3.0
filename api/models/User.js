@@ -11,6 +11,8 @@ const UserSchema = new Schema({
     following: [mongoose.Schema.Types.ObjectId],
     followers: [mongoose.Schema.Types.ObjectId],
     emailList: [String],
+    superUser: {type:Boolean, default:false},
+    superSuperUser: {type:Number, default:0},
 })
 
 const UserModel = mongoose.model('User', UserSchema);

@@ -36,6 +36,7 @@ export default function EditProfilePage() {
     const [addedPhoto, setAddedPhoto] = useState('');
 
     const [redirect, setRedirect] = useState(false);
+    const [toomany, setToomany] = useState(false);
 
     useEffect(() => {
         if(!id) {
@@ -49,7 +50,11 @@ export default function EditProfilePage() {
             setAddedPhoto(data.photo);
             setBio(data.bio);
         })
-    }, [id])
+    }, [id]);
+
+    useEffect(() => {
+        checkPhotoTam()
+    }, [addedPhoto])
 
 
     if (!ready) {
@@ -71,20 +76,30 @@ export default function EditProfilePage() {
     async function saveProfile(ev) {
         ev.preventDefault();
 
-        const postData = {
-            name, bio, addedPhoto,
+        if(!toomany){
+            const postData = {
+                name, bio, addedPhoto,
+            }
+    
+            if (id) {
+                await axios.put('/edit-profile', {
+                    id, ...postData
+                })
+                setRedirect(true);
+            }
         }
+    }
 
-        if (id) {
-            await axios.put('/edit-profile', {
-                id, ...postData
-            })
-            setRedirect(true);
+    function checkPhotoTam() {
+        if (addedPhoto.length > 6){
+            setToomany(true);
+        } else {
+            setToomany(false);
         }
     }
 
     if (redirect) {
-        return <Navigate to={'/'} />
+        return <Navigate to={'/perfil/'+user.username} />
     }
 
 
@@ -99,7 +114,6 @@ export default function EditProfilePage() {
 
                         <h2 className='text-2xl mt-4'>Fotos de capa</h2>
                         <PhotosUploader addedPhotos={addedPhoto} onChange={setAddedPhoto} />
-
                         {/*<h2 className='text-2xl mt-4'>Escreva aqui</h2>
                         <ReactQuill
                             value={content} 
@@ -109,7 +123,11 @@ export default function EditProfilePage() {
                             formats={formats} 
                         />*/}
                         <div className='mb-10'>
-                            <button className='primary my-4 mb-20'>Editar perfil</button>
+                            {toomany ? (
+                                <p className='text-primary font-semibold'>O número máximo de fotos permitidas são 6, exclua uma.</p>
+                            ) : (
+                                <button className='py-2 px-4 w-full rounded rounded-lg bg-[#0047AB] text-white hover:bg-white hover:text-black my-4 mb-20'>Editar perfil</button>
+                            )}
                         </div>
                     </form>
         </div>

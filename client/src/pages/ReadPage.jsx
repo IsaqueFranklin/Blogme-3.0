@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams, Navigate } from "react-router-dom"
+import { useParams, Navigate, Link } from "react-router-dom"
 import { UserContext } from '../UserContext';
 import axios from 'axios';
 import { format } from "date-fns";
@@ -51,6 +51,7 @@ export default function ReadPage() {
 
     return (
         <div className='mt-4 lg:px-8 sm:px-2 pt-8'>
+            <Link to={'/perfil/'+post.owner.username}><p className="">@{post.owner.username}</p></Link>
             <p className="">{post.owner.name}</p>
             <p className="">Escrito em {format(new Date(post.dia), 'dd/MM/yyyy')}</p>
             {/*<p className="">Último modificado em {format(new Date(post.modific), 'dd/MM/yyyy')}</p>*/}
