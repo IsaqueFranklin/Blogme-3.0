@@ -16,6 +16,7 @@ export default function RegisterPage() {
     const [repeatedUsername, setRepeatedUsername] = useState(false);
     const [repeatedEmail, setRepeatedEmail] = useState(false);
     const [senhatamanho, setSenhatamanho] = useState(false);
+    const [modal, setModal] = useState(false);
 
     useEffect(() => {
       axios.get('/users').then(response => {
@@ -60,6 +61,7 @@ export default function RegisterPage() {
                 password,
             });
             setRedirect('/login')
+            
             alert('O cadastro foi bem sucedido, faça seu login novamente.')
           } catch (e) {
               console.log(e);
@@ -85,6 +87,11 @@ export default function RegisterPage() {
           ```
         */}
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+          {modal ? (
+            <div className="py-2 px-3 text-white bg-[#198320] rounded-2xl justify-center items-center mx-auto my-auto">
+              <h2 className="text-xl mx-auto my-auto text-center">Cadastro bem sucedido.</h2>
+            </div>
+          ) : ''}
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <img
               className="mx-auto h-10 w-auto"
@@ -121,7 +128,7 @@ export default function RegisterPage() {
                 <div className="mt-2">
                   <input
                     value={username}
-                    onChange={ev => (setUsername(ev.target.value))}
+                    onChange={ev => (setUsername(ev.target.value.toLowerCase()))}
                     id="name"
                     name="name"
                     type="text"

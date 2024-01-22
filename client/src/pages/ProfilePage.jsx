@@ -48,7 +48,7 @@ export default function ProfilePage() {
     }
 
     return (
-        <div>
+        <div className='mb-24'>
             <div className='mt-6 lg:mt-16 border border-gray-800 rounded-2xl mb-8'>
                 <div className='my-auto p-6 lg:p-16 w-full lg:grid lg:grid-cols-2 text-center lg:text-left gap-16'>
                     <div>
@@ -78,7 +78,7 @@ export default function ProfilePage() {
                             <div className='mx-auto' key={key}>
                                 <img className='rounded rounded-2xl aspect-square w-32 h-22 md:w-60 md:h-60 lg:w-60 lg:h-60' src={'http://localhost:4000/uploads/'+photo} alt="" />
                             </div>
-                ))}       
+                ))}    
                 </div>
             </div>
             {places.length > 0 ? (
