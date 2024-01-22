@@ -23,6 +23,7 @@ export default function RegisterPage() {
         setUsers(response.data);
         matchUsername();
         matchEmail();
+        senhaTam()
       })
     })
 
@@ -46,6 +47,14 @@ export default function RegisterPage() {
           setNoregister(true);
         }
       })
+    }
+
+    function senhaTam(){
+      if(password.length < 8 && password.length > 0){
+        setSenhatamanho(true);
+      } else {
+        setSenhatamanho(false);
+      }
     }
 
     async function registerUser(ev) {
@@ -183,12 +192,19 @@ export default function RegisterPage() {
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
+                  {senhatamanho ? (
+                    <p className='text-primary font-semibold text-sm'>A senha precisa ter no mínimo 8 caracteres.</p>
+                  ) : ''}
                 </div>
               </div>
   
               <div>
-                {repeatedEmail || repeatedUsername ? (
-                  <p className='text-primary font-semibold'>Seu email ou username já existem, por favor escolha outros.</p>
+                {repeatedEmail ? (
+                  <p className='text-primary font-semibold'>Seu email já existe, por favor escolha outro.</p>
+                ) : repeatedUsername ? (
+                  <p className='text-primary font-semibold'>Seu username já existe, por favor escolha outro.</p>
+                ) : senhatamanho ? (
+                  <p className='text-primary font-semibold'>A senha precisa ter no mínimo 8 caracteres.</p>
                 ) : (
                   <button
                     type="submit"
