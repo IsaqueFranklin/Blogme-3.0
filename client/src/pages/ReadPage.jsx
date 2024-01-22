@@ -59,8 +59,8 @@ export default function ReadPage() {
 
             ) : ('')}
             <div className="mb-6">
-                <h1 className='text-3xl'>{post.title}</h1>
-                <h2 className='font-normal text-xl mb-6'>{post.description}</h2>
+                <h1 className='font-[Fira_Sans_Condensed] text-3xl lg:text-5xl font-semibold text-[#131316]'>{post.title}</h1>
+                <h2 className='font-normal font-serif  text-lg lg:text-xl md:text-xl mb-6 text-gray-600'>{post.description}</h2>
                 <p className="font-semibold">Escrito em {format(new Date(post.dia), 'dd/MM/yyyy')}</p>
                 {post.modific ? (
                     <p className="font-semibold">Último modificado em {format(new Date(post.modific), 'dd/MM/yyyy')}</p>
@@ -82,7 +82,7 @@ export default function ReadPage() {
                 <p className="text-xl">{post.owner.name}</p>
                 <Link to={'/perfil/'+post.owner.username}><p className="text-[#0047AB] mb-8">@{post.owner.username}</p></Link>
             </div>
-            <div className='content' dangerouslySetInnerHTML={{__html:post.content}} />
+            <div className='content text-lg lg:text-xl lg:leading-relaxed leading-normal font-serif text-gray-800' dangerouslySetInnerHTML={{__html:post.content}} />
         </div>
     )
 }

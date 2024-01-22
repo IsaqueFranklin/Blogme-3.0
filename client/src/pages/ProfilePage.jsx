@@ -33,7 +33,17 @@ export default function ProfilePage() {
 
     if(!usuario) {
         return (
-            <div>Carregando...</div>
+            <div className='mx-auto my-auto'>
+                <img className='max-w-32 max-h-32' src='https://i.stack.imgur.com/kOnzy.gif' />
+            </div>
+        )
+    }
+
+    if(!places){
+        return (
+            <div className='mx-auto my-auto'>
+                <img className='max-w-32 max-h-32' src='https://i.stack.imgur.com/kOnzy.gif' />
+            </div>
         )
     }
 
