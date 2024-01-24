@@ -41,8 +41,8 @@ export default function ProfilePage() {
 
     async function seguir(ev){
         ev.preventDefault();
-        setSeguindo(true);
         if(user){
+            setSeguindo(true);
             if(user.following){
                 setUserFollowing(...user.following);
                 userFollowing.push(usuario._id);
@@ -58,8 +58,9 @@ export default function ProfilePage() {
 
     async function deseguir(ev){
         ev.preventDefault();
-        setSeguindo(false);
         if(user){
+            setSeguindo(false);
+            setFollowing(false);
             for(let i = 0; i <= usuarioFollowers.length; i=i+1){
                 if(usuarioFollowers[i] === user._id){
                     usuarioFollowers.splice(i, 1);
@@ -123,17 +124,20 @@ export default function ProfilePage() {
                         <h3 className='text-2xl'>{usuario.name}</h3>
                         <Link to={'/perfil/'+usuario.username}><h2 className='font-semibold text-[#0047AB] mb-2'>@{usuario.username}</h2></Link>
                         <h3 className='italic mb-4'>{usuario.bio}</h3>
-                        {usuario?._id != user?._id ? 
-                            seguindo || following ? (
-                                <button onClick={deseguir} className="py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Seguindo</button>
-                            ) : (
+                        {user ?
+                            usuario?._id != user?._id ?
+                                seguindo || following ? (
+                                    <button onClick={deseguir} className="py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Seguindo</button>
+                                ) : (
                                 <button onClick={seguir} className="py-2 px-4 rounded rounded-lg bg-gray-800 text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Seguir</button>
-                        ) : (
-                            <div className=''>
-                                <Link to={'/editar/'+user._id+'/'+user.username}><button className="py-2 px-4 text-sm lg:text-md rounded rounded-lg bg-[#0047AB] text-white hover:bg-white hover:text-black max-w-sm mx-1 my-1">Editar perfil</button></Link>
-                                <Link to={'/premium/'+user._id}><button className="py-2 px-4 text-sm lg:text-md rounded rounded-lg bg-gray-900 text-white hover:text-black hover:bg-white max-w-sm mx-1 my-1">Virar premium</button></Link>
-                            </div>
-                        )}
+                                ) 
+                            : (
+                                <div className=''>
+                                    <Link to={'/editar/'+user._id+'/'+user.username}><button className="py-2 px-4 text-sm lg:text-md rounded rounded-lg bg-[#0047AB] text-white hover:bg-white hover:text-black max-w-sm mx-1 my-1">Editar perfil</button></Link>
+                                    <Link to={'/premium/'+user._id}><button className="py-2 px-4 text-sm lg:text-md rounded rounded-lg bg-gray-900 text-white hover:text-black hover:bg-white max-w-sm mx-1 my-1">Virar premium</button></Link>
+                                </div>
+                            ) 
+                        : ''}
                     </div>
                 </div>
                 {usuario?._id != user?._id ? (
