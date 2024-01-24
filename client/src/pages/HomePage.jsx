@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../UserContext';
 import { Navigate, useParams, Link } from 'react-router-dom';
+import {differenceInCalendarDays} from 'date-fns';
 import axios from 'axios';
 import PostsGrid from '../components/PostsGrid';
 
@@ -32,7 +33,12 @@ export default function HomePage() {
 
     if (ready && !user && !redirect) {
         return (
-            <PostsGrid places={places} />
+            <div className='mb-16'>
+                <p className='text-2xl text-left mt-8'>Publicações mais curtidas</p>
+                <PostsGrid places={places.filter(place => place.likes.length > 0)} />
+                <p className='text-2xl text-left mt-8'>Publicações mais recentes</p>
+                <PostsGrid places={places.filter(place => differenceInCalendarDays(new Date(), new Date(place.dia)) <= 5)} />
+            </div>
         )
     };
 
@@ -42,7 +48,7 @@ export default function HomePage() {
 
     if (user) {
         return (
-            <div className='text-center mx-auto'>
+            <div className='text-center mx-auto mb-16'>
                 <div className='border border-gray-800 rounded-2xl p-8'>
                     <h2 className='text-2xl font-semibold text-[#0047AB] mb-4'>Bem-vindo, {user.name}!</h2>
                     <h2 className='text-lg'>Logado como {user.name} (@{user.username})</h2>
@@ -63,6 +69,11 @@ export default function HomePage() {
                         </div>
                     </div>
                 </div>
+                <p className='text-2xl text-left mt-8'>Publicações mais curtidas</p>
+                <PostsGrid places={places.filter(place => place.likes.length > 0)} />
+                <p className='text-2xl text-left mt-8'>Publicações mais recentes</p>
+                <PostsGrid places={places.filter(place => differenceInCalendarDays(new Date(), new Date(place.dia)) <= 5)} />
+                <p className='text-2xl text-left mt-8'>Publicações de quem você segue</p>
                 <PostsGrid places={places} />
             </div>
 
