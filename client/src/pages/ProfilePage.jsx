@@ -24,9 +24,12 @@ export default function ProfilePage() {
         axios.get('/perfil-externo/'+username).then(response => {
             setUsuario(response.data);
             setUsuarioFollowers([...response.data.followers]);
-            checkFollow();
         })
     }, [username])
+
+    useEffect(() => {
+        checkFollow();
+    }, [userFollowing, usuarioFollowers])
 
     function openPosts(){
         if(usuario){
@@ -47,15 +50,48 @@ export default function ProfilePage() {
                 userFollowing.push(usuario._id);
             }
             usuarioFollowers.push(user._id);
-            await axios.post('/seguir', {
+            await axios.put('/seguir', {
                 usuarioFollowers, userFollowing, usuario
             })
         }
     }
 
+    async function deseguir(ev){
+        ev.preventDefault();
+        setSeguindo(false);
+        if(user){
+            for(let i = 0; i <= usuarioFollowers.length; i=i+1){
+                if(usuarioFollowers[i] === user._id){
+                    usuarioFollowers.splice(i, 1);
+                    await axios.put('/seguir', {
+                        usuarioFollowers, userFollowing, usuario
+                    });
+                }
+            }
+
+            for(let j=0; j<= userFollowing.length; j=j+1){
+                if(userFollowing[j] === usuario._id){
+                    userFollowing.splice(j, 1);
+                    await axios.put('/seguir', {
+                        usuarioFollowers, userFollowing, usuario
+                    });
+                }
+            }
+
+            console.log(usuarioFollowers)
+            console.log(userFollowing)
+        }
+    }
+
     function checkFollow(){
-        if(usuarioFollowers.filter(guy => guy === user._id)){
-            setFollowing(true);
+        if(user){
+            for(let i = 0; i <= usuarioFollowers.length; i=i+1){
+                if(usuarioFollowers[i] === user._id){
+                    console.log(usuarioFollowers[i] === user._id)
+                    setFollowing(true);
+                    break
+                }
+            }
         }
     }
 
@@ -76,7 +112,6 @@ export default function ProfilePage() {
         )
     }
 
-
     return (
         <div className='mb-24'>
             <div className='mt-6 lg:mt-16 border border-gray-800 rounded-2xl mb-8'>
@@ -90,7 +125,7 @@ export default function ProfilePage() {
                         <h3 className='italic mb-4'>{usuario.bio}</h3>
                         {usuario?._id != user?._id ? 
                             seguindo || following ? (
-                                <button className="py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Seguindo</button>
+                                <button onClick={deseguir} className="py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Seguindo</button>
                             ) : (
                                 <button onClick={seguir} className="py-2 px-4 rounded rounded-lg bg-gray-800 text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Seguir</button>
                         ) : (

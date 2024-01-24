@@ -94,8 +94,8 @@ app.get('/profile', (req, res) => {
     if (token) {
         jwt.verify(token, jwtSecret, {}, async (err, userData) => {
             if (err) throw err;
-            const {name, username, photo, email, _id} = await User.findById(userData.id);
-            res.json({name, username, photo, email, _id});
+            const {name, username, photo, email, _id, following, followers} = await User.findById(userData.id);
+            res.json({name, username, photo, email, _id, following, followers});
         })
     } else {
         res.json(null)
@@ -224,7 +224,7 @@ app.put('/edit-profile', async (req, res) => {
     res.json(userDoc);
 })
 
-app.post('/curtir', async (req, res) => {
+app.put('/curtir', async (req, res) => {
     const {
         id, likes
     } = req.body;
@@ -235,7 +235,7 @@ app.post('/curtir', async (req, res) => {
     res.json(await doc.save());
 })
 
-app.post('/seguir', async (req, res) => {
+app.put('/seguir', async (req, res) => {
     const userData = await getUserDataFromReq(req);
     const {usuarioFollowers, userFollowing, usuario} = req.body;
 
