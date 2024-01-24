@@ -12,6 +12,8 @@ export default function ReadPage() {
     const [post, setPost] = useState(null);
     const [modal, setModal] = useState(false);
     const [redirect, setRedirect] = useState(false);
+    const [islike, setIslike] = useState(false);
+    const [likes, setLikes] = useState([]);
 
     useEffect(() => {
         if (!id) {
@@ -20,10 +22,17 @@ export default function ReadPage() {
 
         axios.get('/post/'+id).then(response => {
             setPost(response.data);
+            setLikes(response.data.likes)
         })
-    }, [id])
+    }, [])
 
-    if (!post) return '';
+    if(!post){
+        return (
+            <div className='mx-auto my-auto'>
+                <img className='max-w-32 max-h-32' src='https://i.stack.imgur.com/kOnzy.gif' />
+            </div>
+        )
+    }
 
     async function deletePost(ev) {
         ev.preventDefault();
@@ -32,6 +41,28 @@ export default function ReadPage() {
                 id, ...post
             })
             setRedirect(true);
+        }
+    }
+
+    async function curtir(){
+        if(user){
+            likes.push(user._id)
+            setIslike(true);
+            console.log(likes)
+            await axios.post('/curtir', {
+                id, likes
+            })
+        } else {
+            return <Navigate to={'/login'} />
+        }
+    }
+
+    function checkLike(){
+        for (let i = 0; i <= post.likes.length; i=i+1){
+            if(post.likes[i] === user._id) {
+                setIslike(true);
+                break;
+            }
         }
     }
 
@@ -60,7 +91,7 @@ export default function ReadPage() {
             ) : ('')}
             <div className="mb-6">
                 <h1 className='font-[Fira_Sans_Condensed] text-3xl lg:text-5xl font-semibold text-[#131316]'>{post.title}</h1>
-                <h2 className='font-normal font-serif  text-lg lg:text-xl md:text-xl mb-6 text-gray-600'>{post.description}</h2>
+                <h2 className='font-normal font-serif mt-2 text-lg lg:text-xl md:text-xl mb-6 text-gray-600'>{post.description}</h2>
                 <p className="font-semibold">Escrito em {format(new Date(post.dia), 'dd/MM/yyyy')}</p>
                 {post.modific ? (
                     <p className="font-semibold">Último modificado em {format(new Date(post.modific), 'dd/MM/yyyy')}</p>
@@ -77,12 +108,32 @@ export default function ReadPage() {
                     </div>
                 </div>
             </div>
-            <div className="my-10">
-                <p className="mb-2">Escrito por:</p>
-                <p className="text-xl">{post.owner.name}</p>
-                <Link to={'/perfil/'+post.owner.username}><p className="text-[#0047AB] mb-8">@{post.owner.username}</p></Link>
+            <div className="border-b">
+                <div className="mt-8">
+                    <p className="">Escrito por:</p>
+                    <p className="text-xl">{post.owner.name}</p>
+                    <Link to={'/perfil/'+post.owner.username}><p className="text-[#0047AB] mb-8">@{post.owner.username}</p></Link>
+                </div>
+                <div className="flex mb-8 mt-4">
+                    {islike ? (
+                        <button onClick={curtir} className="bg-white flex">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-12 h-12">
+                            <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+                            </svg>
+
+                            <p className="my-auto mx-2">{post.likes.length} likes</p>
+                        </button>
+                    ) : (
+                        <button onClick={curtir} className="bg-white flex">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                            </svg>
+                            <p className="my-auto mx-2">{post.likes.length} likes</p>
+                        </button>
+                    )}
+                </div>
             </div>
-            <div className='content text-lg lg:text-xl lg:leading-relaxed leading-normal font-serif text-gray-800' dangerouslySetInnerHTML={{__html:post.content}} />
+            <div className='content text-lg lg:text-xl lg:leading-relaxed leading-normal font-serif text-gray-800 mb-8 mt-8' dangerouslySetInnerHTML={{__html:post.content}} />
         </div>
     )
 }

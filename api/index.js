@@ -224,6 +224,17 @@ app.put('/edit-profile', async (req, res) => {
     res.json(userDoc);
 })
 
+app.post('/curtir', async (req, res) => {
+    const {
+        id, likes
+    } = req.body;
+
+    const doc = await Post.findById(id);
+    doc.likes = likes;
+
+    res.json(await doc.save());
+})
+
 //Starting the server
 
 app.listen(4000, () => {
