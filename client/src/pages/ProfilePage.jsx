@@ -51,6 +51,12 @@ export default function ProfilePage() {
         }
     }
 
+    if(user && usuario){
+        if(usuarioFollowers.filter(guy => guy === user._id.toString())){
+            setSeguindo(true);
+        }
+    }
+
 
     if(!usuario) {
         return (
@@ -82,7 +88,7 @@ export default function ProfilePage() {
                         <h3 className='italic mb-4'>{usuario.bio}</h3>
                         {usuario?._id != user?._id ? 
                             seguindo ? (
-                                <button onClick={seguir} className="py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Seguindo</button>
+                                <button className="py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Seguindo</button>
                             ) : (
                                 <button onClick={seguir} className="py-2 px-4 rounded rounded-lg bg-gray-800 text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Seguir</button>
                         ) : (
