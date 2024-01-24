@@ -235,6 +235,21 @@ app.post('/curtir', async (req, res) => {
     res.json(await doc.save());
 })
 
+app.post('/seguir', async (req, res) => {
+    const userData = await getUserDataFromReq(req);
+    const {usuarioFollowers, userFollowing, usuario} = req.body;
+
+    const userDoc = await User.findById(userData.id);
+    userDoc.following = userFollowing;
+
+    await userDoc.save()
+
+    const usuarioDoc = await User.findById(usuario._id);
+    usuarioDoc.followers = usuarioFollowers;
+
+    await usuarioDoc.save()
+})
+
 //Starting the server
 
 app.listen(4000, () => {
