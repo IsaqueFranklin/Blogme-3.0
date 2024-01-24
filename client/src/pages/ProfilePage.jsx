@@ -14,6 +14,7 @@ export default function ProfilePage() {
     const [usuarioFollowers, setUsuarioFollowers] = useState([]);
     const [places, setPlaces] = useState([]);
     const [seguindo, setSeguindo] = useState(false);
+    const [following, setFollowing] = useState(false);
 
     useEffect(() => {
         if (!username) {
@@ -23,6 +24,7 @@ export default function ProfilePage() {
         axios.get('/perfil-externo/'+username).then(response => {
             setUsuario(response.data);
             setUsuarioFollowers([...response.data.followers]);
+            checkFollow();
         })
     }, [username])
 
@@ -51,9 +53,9 @@ export default function ProfilePage() {
         }
     }
 
-    if(user && usuario){
-        if(usuarioFollowers.filter(guy => guy === user._id.toString())){
-            setSeguindo(true);
+    function checkFollow(){
+        if(usuarioFollowers.filter(guy => guy === user._id)){
+            setFollowing(true);
         }
     }
 
@@ -87,7 +89,7 @@ export default function ProfilePage() {
                         <Link to={'/perfil/'+usuario.username}><h2 className='font-semibold text-[#0047AB] mb-2'>@{usuario.username}</h2></Link>
                         <h3 className='italic mb-4'>{usuario.bio}</h3>
                         {usuario?._id != user?._id ? 
-                            seguindo ? (
+                            seguindo || following ? (
                                 <button className="py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Seguindo</button>
                             ) : (
                                 <button onClick={seguir} className="py-2 px-4 rounded rounded-lg bg-gray-800 text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Seguir</button>
