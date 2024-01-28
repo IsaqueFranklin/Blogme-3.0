@@ -91,14 +91,18 @@ app.post('/login', async (req, res) => {
 
 app.get('/profile', (req, res) => {
     const {token} = req.cookies;
-    if (token) {
-        jwt.verify(token, jwtSecret, {}, async (err, userData) => {
-            if (err) throw err;
-            const {name, username, photo, email, _id, following, followers} = await User.findById(userData.id);
-            res.json({name, username, photo, email, _id, following, followers});
-        })
-    } else {
-        res.json(null)
+    try {
+        if (token) {
+            jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+                if (err) throw err;
+                const {name, username, photo, email, _id, following, followers} = await User.findById(userData.id);
+                res.json({name, username, photo, email, _id, following, followers});
+            })
+        } else {
+            res.json(null)
+        }
+    } catch (e) {
+        console.log('Error: '+e);
     }
 })
 
