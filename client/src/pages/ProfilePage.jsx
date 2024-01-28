@@ -134,7 +134,7 @@ export default function ProfilePage() {
                             : (
                                 <div className=''>
                                     <Link to={'/editar/'+user._id+'/'+user.username}><button className="py-2 px-4 text-sm lg:text-md rounded rounded-lg bg-[#0047AB] text-white hover:bg-white hover:text-black max-w-sm mx-1 my-1">Editar perfil</button></Link>
-                                    <Link to={'/premium/'+user._id}><button className="py-2 px-4 text-sm lg:text-md rounded rounded-lg bg-gray-900 text-white hover:text-black hover:bg-white max-w-sm mx-1 my-1">Virar premium</button></Link>
+                                    <Link to={user?.superUser === true ? '/painel/'+user._id : '/premium/'+user._id}><button className="py-2 px-4 text-sm lg:text-md rounded rounded-lg bg-gray-900 text-white hover:text-black hover:bg-white max-w-sm mx-1 my-1">{user?.superUser === true ? 'Painel de controle' : 'Virar premium'}</button></Link>
                                 </div>
                             ) 
                         : ''}

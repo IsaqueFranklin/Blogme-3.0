@@ -68,8 +68,8 @@ export default function HomePage() {
                     <h2 className='text-2xl font-semibold text-[#0047AB] mb-4'>Bem-vindo, {user.name}!</h2>
                     <h2 className='text-lg'>Logado como {user.name} (@{user.username})</h2>
                     <p className='text-md mb-6'>Leia as melhores publicações de quem você segue! </p>
-                    <div className="text-center max-w-lg mx-auto">
-                        <div className='grid grid-cols-2 mx-auto -gap-128'>
+                    <div className="text-center mx-auto ">
+                        <div className='lg:grid lg:grid-cols-3 mx-auto'>
                             <div>
                                 <Link>
                                     <button onClick={logout} className="py-2 px-4 rounded rounded-lg bg-gray-800 text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Logout</button>
@@ -79,6 +79,11 @@ export default function HomePage() {
                             <div>
                                 <Link to={'/perfil/'+user.username}>
                                     <button className='py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black'>Ir ao perfil</button>
+                                </Link>
+                            </div>
+                            <div>
+                                <Link to={'/publicar'}>
+                                    <button className='py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black'>Fazer publicação</button>
                                 </Link>
                             </div>
                         </div>

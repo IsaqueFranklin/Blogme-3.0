@@ -153,6 +153,22 @@ export default function ReadPage() {
                 </div>
             </div>
             <div className='content text-lg lg:text-xl lg:leading-relaxed leading-normal font-serif text-gray-800 mb-8 mt-8' dangerouslySetInnerHTML={{__html:post.content}} />
+            <div className="my-16 border-t">
+                <div className="text-center mx-auto my-auto items-center">
+                    <h2 className="text-xl font-semibold my-8">Saiba mais sobre o escritor deste artigo</h2>
+                    <div className='border border-gray-700 rounded-2xl my-auto p-6 lg:p-16 w-full lg:grid lg:grid-cols-2 text-center lg:text-left gap-16'>
+                        <div>
+                            <img className='rounded-full lg:h-60 lg:w-60 md:h-60 md:w-60 h-48 w-48 mx-auto aspect-square' src={'http://localhost:4000/uploads/'+post.owner?.photo[0]} />
+                        </div>
+                        <div className='mt-8'>
+                            <h3 className='text-2xl'>{post.owner.name}</h3>
+                            <Link to={'/perfil/'+post.owner.username}><h2 className='font-semibold text-[#0047AB] mb-2'>@{post.owner.username}</h2></Link>
+                            <h3>{post.owner.bio}</h3>
+                            <Link to={'/perfil/'+post.owner.username}><button className="mt-6 text-white rounded-lg px-3 py-2 bg-[#0047AB] hover:bg-gray-700">Ver mais publicações</button></Link>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

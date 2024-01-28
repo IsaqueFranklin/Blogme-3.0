@@ -95,8 +95,8 @@ app.get('/profile', (req, res) => {
         if (token) {
             jwt.verify(token, jwtSecret, {}, async (err, userData) => {
                 if (err) throw err;
-                const {name, username, photo, email, _id, following, followers} = await User.findById(userData.id);
-                res.json({name, username, photo, email, _id, following, followers});
+                const {name, username, photo, email, _id, following, followers, superUser} = await User.findById(userData.id);
+                res.json({name, username, photo, email, _id, following, followers, superUser});
             })
         } else {
             res.json(null)
@@ -185,7 +185,7 @@ app.get('/posts/:id', async (req, res) => {
 
 app.get('/post/:id', async (req, res) => {
     const {id} = req.params;
-    res.json(await Post.findById(id).populate('owner', ['username', 'name', 'email', 'photo']));
+    res.json(await Post.findById(id).populate('owner', ['username', 'name', 'email', 'photo', 'bio']));
 })
 
 app.get('/perfil-externo/:username', async (req, res) => {
