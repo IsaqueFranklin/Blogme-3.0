@@ -9,13 +9,21 @@ export default function PainelPage(){
 
     const {id} = useParams();
 
-    if(user){
+    if(user?.superUser === true){
         return (
             <div className='mx-auto my-auto'>
                 <h2 className='text-2xl'>Está funcionando!</h2>
             </div>
         )
     } else {
-        return <Navigate to={'/register'}/>
+        return <Navigate to={'/'}/>
+    }
+
+    if(!user){
+        return (
+            <div>
+                <p>Carregando...</p>
+            </div>
+        )
     }
 }

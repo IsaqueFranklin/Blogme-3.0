@@ -9,13 +9,13 @@ export default function BecomePremiumPage(){
 
     const {id} = useParams();
 
-    if(user){
+    if(user?.superUser === false){
         return (
             <div className='mx-auto my-auto'>
                 <h2 className='text-2xl'>Está funcionando!</h2>
             </div>
         )
     } else {
-        return <Navigate to={'/register'}/>
+        return <Navigate to={'/'}/>
     }
 }
