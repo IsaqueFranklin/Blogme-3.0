@@ -34,6 +34,13 @@ export default function ProfilePage() {
         checkFollow();
     }, [userFollowing, usuarioFollowers])
 
+    useEffect(() => {
+        if(user){
+            setUserFollowing([...user.following]);
+            console.log(userFollowing)
+        }
+    }, [user])
+
     function openPosts(){
         if(usuario){
             axios.get('/posts/'+usuario._id).then(response => {
@@ -46,15 +53,11 @@ export default function ProfilePage() {
         ev.preventDefault();
         if(user){
             setSeguindo(true);
-            if(user.following){
-                setUserFollowing(...user.following);
-                userFollowing.push(usuario._id);
-            } else {
-                userFollowing.push(usuario._id);
-            }
+            userFollowing.push(usuario._id);
             usuarioFollowers.push(user._id);
             emailList.push(user.email);
             console.log(emailList);
+            console.log(userFollowing)
             await axios.put('/seguir', {
                 usuarioFollowers, userFollowing, emailList, usuario
             })

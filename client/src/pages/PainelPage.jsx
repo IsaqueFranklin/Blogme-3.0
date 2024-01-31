@@ -9,21 +9,20 @@ export default function PainelPage(){
 
     const {id} = useParams();
 
+    async function enviarEmail(ev){
+        ev.preventDefault();
+
+        await axios.post('/enviar-email')
+    }
+
     if(user?.superUser === true){
         return (
             <div className='mx-auto my-auto'>
                 <h2 className='text-2xl'>Está funcionando!</h2>
+                <button onClick={enviarEmail}>Enviar email</button>
             </div>
         )
     } else {
         return <Navigate to={'/'}/>
-    }
-
-    if(!user){
-        return (
-            <div>
-                <p>Carregando...</p>
-            </div>
-        )
     }
 }

@@ -9,6 +9,7 @@ const Post = require('./models/Post');
 const imageDownloader = require('image-downloader');
 const multer = require('multer');
 const fs = require('fs');
+const { MailerSend, EmailParams, Sender, Recipient } = require("mailersend");
 require('dotenv').config();
 
 const app = express();
@@ -28,6 +29,12 @@ app.use(cors({
     origin: 'http://localhost:5173'
 }));
 
+
+//Seting up Mailer Send API
+
+const mailerSend = new MailerSend({
+    apiKey: process.env.MailerSend_API,
+});
 
 //MongoDB connection goes here
 
@@ -175,7 +182,7 @@ app.put('/publicar', async (req, res) => {
 })
 
 app.get('/posts', async (req, res) => {
-    res.json(await Post.find().populate('owner', ['username']).sort({createdAt: -1}));
+    res.json(await Post.find().populate('owner', ['username', 'followers']).sort({createdAt: -1}));
 })
 
 app.get('/posts/:id', async (req, res) => {
@@ -253,6 +260,38 @@ app.put('/seguir', async (req, res) => {
     usuarioDoc.emailList = emailList;
 
     await usuarioDoc.save()
+})
+
+app.put('/update-email-list', async (req, res) => {
+    const userData = await getUserDataFromReq(req);
+    const {emailList, usuario} = req.body;
+
+    const usuarioDoc = await User.findById(usuario._id);
+    usuarioDoc.emailList = emailList;
+
+    await usuarioDoc.save()
+})
+
+app.post('/enviar-email', async (req, res) => {
+    const sentFrom = new Sender("contato@belaazevedo.com.br", "Isaque Franklin");
+
+    const recipients = [
+        new Recipient("contato@belaazevedo.com.br", "Isaque Franklin")
+    ];
+
+    const emailParams = new EmailParams()
+    .setFrom(sentFrom)
+    .setTo(recipients)
+    .setReplyTo(sentFrom)
+    .setSubject("Isso é um teste de envio de emails pela API.")
+    .setHtml("<strong>Funciona!</strong>")
+    .setText("Excelente.");
+
+    mailerSend.email.send(emailParams).then(() => {
+        console.log(true)
+    }).catch((err) => {
+        console.log(err);
+    })
 })
 
 //Starting the server

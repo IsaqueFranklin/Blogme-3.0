@@ -48,19 +48,6 @@ export default function HomePage() {
         return <Navigate to={redirect} />
     }
 
-    function postFollow(){
-        if(user && places){
-            for(let i=0; i<=places.length; i=i+1){
-                for(let j=0; j<=user.following.length; j=j+1){
-                    if(user.following[i] === places[j]?.owner.id){
-                        followPosts.push(places[j])
-                    }
-                }
-            }
-            console.log(followPosts)
-        }
-    }
-
     if (user) {
         return (
             <div className='text-center mx-auto mb-16'>
@@ -94,7 +81,11 @@ export default function HomePage() {
                 <p className='text-2xl text-left mt-8'>Publicações mais recentes</p>
                 <PostsGrid places={places.filter(place => differenceInCalendarDays(new Date(), new Date(place.dia)) <= 5)} />
                 <p className='text-2xl text-left mt-8'>Publicações de quem você segue</p>
-                <PostsGrid places={places.filter(place => user.following.filter(us => place.owner._id === us))} />
+                <PostsGrid 
+                    places={
+                        places.filter(place => place.owner.followers.includes(user._id))
+                    } 
+                />
             </div>
 
         )
