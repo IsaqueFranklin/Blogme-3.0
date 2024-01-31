@@ -9,6 +9,8 @@ const PostSchema = new mongoose.Schema({
     dia: Date,
     modific: Date,
     likes: [String],
+    enviado: false,
+    EnviadoPara: [String],
 });
 
 const PostModel = mongoose.model('post', PostSchema);
