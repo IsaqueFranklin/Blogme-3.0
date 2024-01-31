@@ -15,6 +15,7 @@ export default function ProfilePage() {
     const [places, setPlaces] = useState([]);
     const [seguindo, setSeguindo] = useState(false);
     const [following, setFollowing] = useState(false);
+    const [emailList, setEmailList] = useState([]);
 
     useEffect(() => {
         if (!username) {
@@ -24,6 +25,8 @@ export default function ProfilePage() {
         axios.get('/perfil-externo/'+username).then(response => {
             setUsuario(response.data);
             setUsuarioFollowers([...response.data.followers]);
+            setEmailList([...response.data.emailList]);
+            console.log(emailList)
         })
     }, [username])
 
@@ -50,9 +53,12 @@ export default function ProfilePage() {
                 userFollowing.push(usuario._id);
             }
             usuarioFollowers.push(user._id);
+            emailList.push(user.email);
+            console.log(emailList);
             await axios.put('/seguir', {
-                usuarioFollowers, userFollowing, usuario
+                usuarioFollowers, userFollowing, emailList, usuario
             })
+            window.location.reload();
         }
     }
 
@@ -64,23 +70,28 @@ export default function ProfilePage() {
             for(let i = 0; i <= usuarioFollowers.length; i=i+1){
                 if(usuarioFollowers[i] === user._id){
                     usuarioFollowers.splice(i, 1);
-                    await axios.put('/seguir', {
-                        usuarioFollowers, userFollowing, usuario
-                    });
+                    break;
                 }
             }
 
             for(let j=0; j<= userFollowing.length; j=j+1){
                 if(userFollowing[j] === usuario._id){
                     userFollowing.splice(j, 1);
-                    await axios.put('/seguir', {
-                        usuarioFollowers, userFollowing, usuario
-                    });
+                    break;
                 }
             }
 
-            console.log(usuarioFollowers)
-            console.log(userFollowing)
+            for(let f=0; f<= emailList.length; f=f+1){
+                if(emailList[f] === user.email){
+                    emailList.splice(f, 1);
+                    break;
+                }
+            }
+
+            await axios.put('/seguir', {
+                usuarioFollowers, userFollowing, emailList, usuario
+            });
+
         }
     }
 

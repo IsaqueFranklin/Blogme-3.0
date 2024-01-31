@@ -241,7 +241,7 @@ app.put('/curtir', async (req, res) => {
 
 app.put('/seguir', async (req, res) => {
     const userData = await getUserDataFromReq(req);
-    const {usuarioFollowers, userFollowing, usuario} = req.body;
+    const {usuarioFollowers, userFollowing, emailList, usuario} = req.body;
 
     const userDoc = await User.findById(userData.id);
     userDoc.following = userFollowing;
@@ -250,6 +250,7 @@ app.put('/seguir', async (req, res) => {
 
     const usuarioDoc = await User.findById(usuario._id);
     usuarioDoc.followers = usuarioFollowers;
+    usuarioDoc.emailList = emailList;
 
     await usuarioDoc.save()
 })

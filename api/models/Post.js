@@ -9,7 +9,7 @@ const PostSchema = new mongoose.Schema({
     dia: Date,
     modific: Date,
     likes: [String],
-    enviado: false,
+    enviado: {type:Boolean, default:false},
     EnviadoPara: [String],
 });
 
