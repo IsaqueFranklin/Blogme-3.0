@@ -9,7 +9,7 @@ const Post = require('./models/Post');
 const imageDownloader = require('image-downloader');
 const multer = require('multer');
 const fs = require('fs');
-const { MailerSend, EmailParams, Sender, Recipient } = require("mailersend");
+const nodemailer = require("nodemailer");
 require('dotenv').config();
 
 const app = express();
@@ -28,13 +28,6 @@ app.use(cors({
     credentials: true, 
     origin: 'http://localhost:5173'
 }));
-
-
-//Seting up Mailer Send API
-
-const mailerSend = new MailerSend({
-    apiKey: process.env.MailerSend_API,
-});
 
 //MongoDB connection goes here
 
@@ -192,7 +185,7 @@ app.get('/posts/:id', async (req, res) => {
 
 app.get('/post/:id', async (req, res) => {
     const {id} = req.params;
-    res.json(await Post.findById(id).populate('owner', ['username', 'name', 'email', 'photo', 'bio']));
+    res.json(await Post.findById(id).populate('owner', ['username', 'name', 'email', 'photo', 'bio', 'emailList']));
 })
 
 app.get('/perfil-externo/:username', async (req, res) => {
@@ -272,26 +265,47 @@ app.put('/update-email-list', async (req, res) => {
     await usuarioDoc.save()
 })
 
-app.post('/enviar-email', async (req, res) => {
-    const sentFrom = new Sender("contato@belaazevedo.com.br", "Isaque Franklin");
+app.post('/enviar-email-teste', async (req, res) => {
+    const userData = await getUserDataFromReq(req);
+    const {title, description, photos, 
+        content, dia, modific, owner} = req.body;
 
-    const recipients = [
-        new Recipient("contato@belaazevedo.com.br", "Isaque Franklin")
-    ];
+    const usuario = await User.findById(userData.id);
+    console.log(usuario.emailList)
 
-    const emailParams = new EmailParams()
-    .setFrom(sentFrom)
-    .setTo(recipients)
-    .setReplyTo(sentFrom)
-    .setSubject("Isso é um teste de envio de emails pela API.")
-    .setHtml("<strong>Funciona!</strong>")
-    .setText("Excelente.");
+    const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+          // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+          user: "isaquefrankli@gmail.com",
+          pass: process.env.GMAIL_API_KEY,
+        },
+      });
 
-    mailerSend.email.send(emailParams).then(() => {
-        console.log(true)
-    }).catch((err) => {
-        console.log(err);
-    })
+    // async..await is not allowed in global scope, must use a wrapper
+    async function main() {
+        // send mail with defined transport object
+        const info = await transporter.sendMail({
+        from: userData.email, // sender address
+        to: usuario.emailList, // list of receivers
+        subject: title, // Subject line
+        text: description, // plain text body
+        html: content, // html body
+        });
+    
+        console.log("Message sent: %s", info.messageId);
+        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+    
+        //
+        // NOTE: You can go to https://forwardemail.net/my-account/emails to see your email delivery status and preview
+        //       Or you can use the "preview-email" npm package to preview emails locally in browsers and iOS Simulator
+        //       <https://github.com/forwardemail/preview-email>
+        //
+    }
+    
+    main().catch(console.error);
 })
 
 //Starting the server

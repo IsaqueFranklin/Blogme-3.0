@@ -73,6 +73,16 @@ export default function ReadPage() {
         }
     }
 
+    async function enviarEmail(ev){
+        ev.preventDefault();
+
+        await axios.post('/enviar-email-teste', {
+            ...post
+        })
+
+        alert('Publicação enviada.')
+    }
+
     if (redirect) {
         return <Navigate to={'/'} />
     }
@@ -95,6 +105,7 @@ export default function ReadPage() {
         <div className='mt-4 lg:px-8 sm:px-2'>
             {user?._id == post.owner._id ? (
                <div className="">
+                <button onClick={enviarEmail} className="m-1 py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Enviar email</button>
                     <a href={'/publicar/'+id} className="hover:no-undeline"><button className="m-1 py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Editar</button></a>
                     <button onClick={ev => setModal(true)} className="m-1 py-2 px-4 rounded rounded-lg bg-gray-800 text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Deletar</button>
                </div>

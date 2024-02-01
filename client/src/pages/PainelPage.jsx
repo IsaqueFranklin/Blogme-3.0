@@ -12,7 +12,9 @@ export default function PainelPage(){
     async function enviarEmail(ev){
         ev.preventDefault();
 
-        await axios.post('/enviar-email')
+        await axios.post('/enviar-email-teste', {
+            
+        })
     }
 
     if(user?.superUser === true){
