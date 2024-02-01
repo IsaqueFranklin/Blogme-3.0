@@ -17,6 +17,9 @@ export default function ReadPage() {
     const [liked, setLiked] = useState(false);
     const [likes, setLikes] = useState([]);
 
+    const [email, setEmail] = useState('');
+    const [inList, setInList] = useState(false);
+
     useEffect(() => {
         if (!id) {
             return 'merda';
@@ -90,6 +93,17 @@ export default function ReadPage() {
     if (redirectlogin) {
         return <Navigate to={'/login'} />
     }
+    
+    async function submitEmail(ev){
+        ev.preventDefault();
+
+        await axios.put('/add-email-to-email-list', {
+            email, ...post
+        });
+
+        setInList(true);
+    }
+
 
     if(modal) {
         return (
@@ -164,6 +178,41 @@ export default function ReadPage() {
                 </div>
             </div>
             <div className='content text-lg lg:text-xl lg:leading-relaxed leading-normal font-serif text-gray-800 mb-8 mt-8' dangerouslySetInnerHTML={{__html:post.content}} />
+            {post.owner.superUser ? 
+                inList ?  (
+                    <div className="my-16 border border-gray-700 rounded-2xl">
+                        <div className="py-8 px-8">
+                            <h2 className="text-2xl text-center mb-2 font-semibold text-[#0047AB]">Parabéns!</h2>
+                            <h2 className="text-lg text-center leading-6 text-gray-900 mb-2">Você está inscrito na lista de emails de <Link to={'/perfil/'+post.owner.username} className="text-[#0047AB]">@{post.owner.username}</Link>.</h2>
+                            <h3 className="text-center text-md leading-6 text-gray-900">Fique atento à sua caixa de entrada.</h3>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="my-16 border border-gray-700 rounded-2xl">
+                        <form onSubmit={submitEmail} className="space-y-6" action="#" method="POST">
+                        <div className="px-8 my-8">
+                            <h2 className="text-2xl mb-2">Inscreva-se na lista de emails de <Link to={'/perfil/'+post.owner.username} className="text-[#0047AB]">@{post.owner.username}</Link>.</h2>
+                            <label htmlFor="email" className="block mb-6 text-md font-medium leading-6 text-gray-900">
+                            Se inscreva para receber as publicações de {post.owner.name} direto no seu email.
+                            </label>
+                            <div className="mt-2">
+                            <input
+                                value={email}
+                                onChange={ev => setEmail(ev.target.value)}
+                                id="email"
+                                name="email"
+                                type="email"
+                                autoComplete="email"
+                                required
+                                placeholder="Insira seu melhor email"
+                                className="rounded-2xl  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            />
+                            </div>
+                            <button className="mt-6 text-white rounded-lg px-3 py-2 bg-[#0047AB] hover:bg-gray-700">Fazer parte da lista</button>
+                        </div>
+                        </form>
+                    </div>
+            ) : ''}
             <div className="my-16 border-t">
                 <div className="text-center mx-auto my-auto items-center">
                     <h2 className="text-xl font-semibold my-8">Saiba mais sobre o escritor deste artigo</h2>

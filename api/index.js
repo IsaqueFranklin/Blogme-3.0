@@ -185,7 +185,7 @@ app.get('/posts/:id', async (req, res) => {
 
 app.get('/post/:id', async (req, res) => {
     const {id} = req.params;
-    res.json(await Post.findById(id).populate('owner', ['username', 'name', 'email', 'photo', 'bio', 'emailList']));
+    res.json(await Post.findById(id).populate('owner', ['username', 'name', 'email', 'photo', 'bio', 'emailList', 'superUser']));
 })
 
 app.get('/perfil-externo/:username', async (req, res) => {
@@ -263,6 +263,28 @@ app.put('/update-email-list', async (req, res) => {
     usuarioDoc.emailList = emailList;
 
     await usuarioDoc.save()
+})
+
+app.put('/add-email-to-email-list', async (req, res) => {
+    const {email, owner} = req.body;
+
+    const usuarioDoc = await User.findById(owner._id);
+    usuarioDoc.emailList.push(email);
+
+    await usuarioDoc.save();
+
+    res.json(usuarioDoc.emailList);
+})
+
+app.put('/add-email-to-email-list-2', async (req, res) => {
+    const {email, _id, username, name} = req.body;
+
+    const usuarioDoc = await User.findById(_id);
+    usuarioDoc.emailList.push(email);
+
+    await usuarioDoc.save();
+
+    res.json(usuarioDoc.emailList);
 })
 
 app.post('/enviar-email-teste', async (req, res) => {

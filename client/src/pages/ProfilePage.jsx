@@ -17,6 +17,9 @@ export default function ProfilePage() {
     const [following, setFollowing] = useState(false);
     const [emailList, setEmailList] = useState([]);
 
+    const [email, setEmail] = useState('');
+    const [inList, setInList] = useState(false);
+
     useEffect(() => {
         if (!username) {
             return 'merda';
@@ -110,6 +113,16 @@ export default function ProfilePage() {
         }
     }
 
+    async function submitEmail(ev){
+        ev.preventDefault();
+
+        await axios.put('/add-email-to-email-list-2', {
+            email, ...usuario
+        });
+
+        setInList(true);
+    }
+
 
     if(!usuario) {
         return (
@@ -151,6 +164,37 @@ export default function ProfilePage() {
                                     <Link to={user?.superUser === true ? '/painel/'+user._id : '/premium/'+user._id}><button className="py-2 px-4 text-sm lg:text-md rounded rounded-lg bg-gray-900 text-white hover:text-black hover:bg-white max-w-sm mx-1 my-1">{user?.superUser === true ? 'Painel de controle' : 'Virar premium'}</button></Link>
                                 </div>
                             ) 
+                        : ''}
+                        {!user ? 
+                            usuario.superUser ? 
+                                inList ?  (
+                                    <div className="my-4 border border-gray-700 rounded-2xl">
+                                        <div className="py-4 px-4">
+                                            <h2 className="text-xl text-left font-semibold text-[#0047AB]">Você já está inscrito!</h2>
+                                            <h2 className="text-left text-md leading-6 text-gray-900">Fique atento à sua caixa de entrada.</h2>
+                                        </div>
+                                    </div>
+                                ) : (
+                                <form onSubmit={submitEmail} className="space-y-6 border-t" action="#" method="POST">
+                                    <div className="mt-2">
+                                        <h2 className="text-md mb-2">Inscreva-se na minha newsletter.</h2>
+                                        <div className="">
+                                        <input
+                                            value={email}
+                                            onChange={ev => setEmail(ev.target.value)}
+                                            id="email"
+                                            name="email"
+                                            type="email"
+                                            autoComplete="email"
+                                            required
+                                            placeholder="Insira seu melhor email"
+                                            className="rounded-2xl text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        />
+                                        </div>
+                                        <button className="mt-2 text-white rounded-lg px-3 py-2 bg-[#0047AB] hover:bg-gray-700">Fazer parte da lista</button>
+                                    </div>
+                                </form>
+                            ) : ''
                         : ''}
                     </div>
                 </div>
