@@ -38,6 +38,9 @@ export default function EditProfilePage() {
     const [redirect, setRedirect] = useState(false);
     const [toomany, setToomany] = useState(false);
 
+    const [instaLink, setInstaLink] = useState(null);
+    const [externLink, setExternLink] = useState('');
+
     useEffect(() => {
         if(!id) {
             return;
@@ -49,6 +52,8 @@ export default function EditProfilePage() {
             //setUsername(data.username);
             setAddedPhoto(data.photo);
             setBio(data.bio);
+            setInstaLink(data.instaLink);
+            setExternLink(data.externLink);
         })
     }, [id]);
 
@@ -78,7 +83,7 @@ export default function EditProfilePage() {
 
         if(!toomany){
             const postData = {
-                name, bio, addedPhoto,
+                name, bio, addedPhoto, instaLink, externLink
             }
     
             if (id) {
@@ -104,32 +109,35 @@ export default function EditProfilePage() {
 
 
     return (
-        <div>
+        <div className='my-auto mx-auto items-center'>
             <form onSubmit={saveProfile}>
-                <h2 className='text-2xl mt-4'>Nome</h2>
+                <h2 className='text-2xl mt-2 mb-2'>Nome</h2>
                 <input type="text" value={name} onChange={ev => setName(ev.target.value)} placeholder='Um título de cair as calças...' />
 
-                <h2 className='text-2xl mt-4'>Bio</h2>
+                <h2 className='text-2xl mt-8 mb-2'>Bio</h2>
                 <input type="text" value={bio} onChange={ev => setBio(ev.target.value)} placeholder='Um descrição de abrir a boca...' /> 
 
-                        <h2 className='text-2xl mt-4'>Fotos de capa</h2>
+                        <h2 className='text-2xl mt-8 mb-2'>Fotos de capa</h2>
                         <PhotosUploader addedPhotos={addedPhoto} onChange={setAddedPhoto} />
-                        {/*<h2 className='text-2xl mt-4'>Escreva aqui</h2>
-                        <ReactQuill
-                            value={content} 
-                            theme={'snow'}
-                            onChange={setContent} 
-                            modules={modules} 
-                            formats={formats} 
-                        />*/}
-                        <div className='mb-10'>
+
+                        {user.superUser ? (
+                            <>
+                                <h2 className='text-2xl mt-8 mb-2'>Seu link do Instagram</h2>
+                                <input type="text" value={instaLink} onChange={ev => setInstaLink(ev.target.value)} placeholder='Adicione o link do seu perfil no Instagram' /> 
+
+                                <h2 className='text-2xl mt-8 mb-2'>Adiciona um link externo na sua bio</h2>
+                                <input type="text" value={externLink} onChange={ev => setExternLink(ev.target.value)} placeholder='Adicione um link externo à sua bio' /> 
+                            </>
+                        ) : ''}
+
+                        <div className='mb-10 mt-12'>
                             {toomany ? (
                                 <p className='text-primary font-semibold'>O número máximo de fotos permitidas são 6, exclua uma.</p>
                             ) : (
                                 <button className='py-2 px-4 w-full rounded rounded-lg bg-[#0047AB] text-white hover:bg-white hover:text-black my-4 mb-20'>Editar perfil</button>
                             )}
                         </div>
-                    </form>
+            </form>
         </div>
     )
 }

@@ -29,6 +29,25 @@ export default function PainelPage(){
     if(user?.superUser === true){
         return (
             <div className='mx-auto my-auto'>
+                <div className='border border-gray-800 rounded-2xl p-8 my-8'>
+                    <h2 className='text-2xl font-semibold text-[#0047AB] mb-4'>Bem-vindo, {user.name}!</h2>
+                    <h2 className='text-lg'>Logado como {user.name} (@{user.username})</h2>
+                    <p className='text-md mb-6'>Leia as melhores publicações de quem você segue! </p>
+                    <div className="text-left">
+                        <div className='lg:grid lg:grid-cols-3'>
+                            <div>
+                                <Link to={'/editar/'+user._id+'/'+user.username}>
+                                    <button className='py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black'>Edição PRO do seu perfil</button>
+                                </Link>
+                            </div>
+                            <div>
+                                <Link to={'/publicar'}>
+                                    <button className='py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black'>Criar landing page</button>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <h2 className='text-2xl'>Painel de controle das Newsletters</h2>                
                     {places?.length > 0 && places?.filter(us => us.enviado === false).map((post,i) => {
 

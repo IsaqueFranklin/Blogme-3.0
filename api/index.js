@@ -213,14 +213,14 @@ app.get('/edit-profile/:id', async (req, res) => {
 app.put('/edit-profile', async (req, res) => {
     const userData = await getUserDataFromReq(req);
     const {
-        id, name, bio, addedPhoto
+        id, name, bio, addedPhoto, instaLink, externLink
     } = req.body;
 
     const userDoc = await User.findById(id);
 
     if(userData.id === userDoc._id.toString()) {
         userDoc.set({
-            name, bio, photo:addedPhoto,
+            name, bio, photo:addedPhoto, instaLink, externLink
         })
     }
 
