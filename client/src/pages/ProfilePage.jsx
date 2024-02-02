@@ -20,6 +20,8 @@ export default function ProfilePage() {
     const [email, setEmail] = useState('');
     const [inList, setInList] = useState(false);
 
+    const [redirect, setRedirect] = useState(null);
+
     useEffect(() => {
         if (!username) {
             return 'merda';
@@ -42,6 +44,13 @@ export default function ProfilePage() {
             setUserFollowing([...user.following]);
         }
     }, [user])
+
+    async function logout() {
+        await axios.post('/logout');
+        setRedirect('/');
+        setUser(null);
+        window.location.reload();
+    }
 
     function openPosts(){
         if(usuario){
@@ -139,8 +148,33 @@ export default function ProfilePage() {
         )
     }
 
+    if (redirect) {
+        return <Navigate to={redirect} />
+    }
+
     return (
         <div className='mb-24'>
+            {user ? (
+                <div className='border border-gray-800 rounded-2xl p-8 mt-12'>
+                    <h2 className='text-2xl font-semibold text-[#0047AB] mb-4'>Bem-vindo, {user.name}!</h2>
+                    <h2 className='text-lg'>Logado como {user.name} (@{user.username})</h2>
+                    <p className='text-md mb-6'>Leia as melhores publicações de quem você segue! </p>
+                    <div className="text-left mx-auto ">
+                        <div className='lg:grid lg:grid-cols-3 mx-auto'>
+                            <div>
+                                <Link to={'/publicar'}>
+                                    <button className='py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black'>Fazer publicação</button>
+                                </Link>
+                            </div>
+                            <div>
+                                <Link to={'/publicar'}>
+                                    <button onClick={logout} className='py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black'>Sair da conta</button>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : ''}
             <div className='mt-6 lg:mt-16 border border-gray-800 rounded-2xl mb-8'>
                 <div className='my-auto p-6 lg:p-16 w-full lg:grid lg:grid-cols-2 text-center lg:text-left gap-16'>
                     <div>

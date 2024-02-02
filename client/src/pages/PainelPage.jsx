@@ -34,21 +34,21 @@ export default function PainelPage(){
                     <h2 className='text-lg'>Logado como {user.name} (@{user.username})</h2>
                     <p className='text-md mb-6'>Leia as melhores publicações de quem você segue! </p>
                     <div className="text-left">
-                        <div className='lg:grid lg:grid-cols-3'>
+                        <div className='lg:grid lg:grid-cols-2'>
                             <div>
                                 <Link to={'/editar/'+user._id+'/'+user.username}>
-                                    <button className='py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black'>Edição PRO do seu perfil</button>
+                                    <button className='py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white mt-2 mb-8 hover:bg-white hover:text-black'>Edição PRO do seu perfil</button>
                                 </Link>
                             </div>
-                            <div>
+                            {/*<div>
                                 <Link to={'/publicar'}>
-                                    <button className='py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black'>Criar landing page</button>
+                                    <button className='py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white mt-2 mb-8 hover:bg-white hover:text-black'>Criar landing page</button>
                                 </Link>
-                            </div>
+                            </div>*/}
                         </div>
                     </div>
                 </div>
-                <h2 className='text-2xl'>Painel de controle das Newsletters</h2>                
+                <h2 className='text-2xl'>Publicações ainda não enviadas</h2>                
                     {places?.length > 0 && places?.filter(us => us.enviado === false).map((post,i) => {
 
                         return (
@@ -70,7 +70,7 @@ export default function PainelPage(){
                     })}
                 {places.length > 0 ? (
                     <div className='mt-12'>
-                        <h2 className='text-xl'>Publicações já enviadas</h2>
+                        <h2 className="text-[#0047AB] py-2 px-4 border border-[#0047AB] rounded-2xl">Publicações já enviadas</h2>
                         <PostsGrid places={places.filter(us => us.enviado === true)} className='mt-16' />
                     </div>
                 ) : ''}

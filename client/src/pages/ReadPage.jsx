@@ -84,8 +84,12 @@ export default function ReadPage() {
             ...post
         })
         
-        setSent(true);
-        alert('Publicação enviada.')
+        await setSent(true);
+        console.log(sent)
+    }
+
+    if(sent){
+        window.location.reload();
     }
 
     if (redirect) {
@@ -121,7 +125,7 @@ export default function ReadPage() {
         <div className='mt-4 lg:px-8 sm:px-2'>
             {user?._id == post.owner._id ? (
                <div className="">
-                    {post.enviado ? (<h2 className="text-[#0047AB] py-2 px-4 border border-[#0047AB] rounded-2xl">Newsletter enviada</h2>) : (
+                    {post.enviado || sent ? (<h2 className="text-[#0047AB] py-2 px-4 border border-[#0047AB] rounded-2xl">Newsletter enviada</h2>) : (
                         <button onClick={enviarEmail} className="m-1 py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Enviar newsletter</button>
                     )}
                     <a href={'/publicar/'+id} className="hover:no-undeline"><button className="m-1 py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Editar</button></a>

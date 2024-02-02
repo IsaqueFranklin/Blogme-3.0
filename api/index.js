@@ -333,6 +333,7 @@ app.post('/enviar-email-teste', async (req, res) => {
     }
     
     main().catch(console.error);
+    res.json();
 })
 
 //Starting the server
