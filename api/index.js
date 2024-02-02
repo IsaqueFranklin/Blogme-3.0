@@ -290,10 +290,15 @@ app.put('/add-email-to-email-list-2', async (req, res) => {
 app.post('/enviar-email-teste', async (req, res) => {
     const userData = await getUserDataFromReq(req);
     const {title, description, photos, 
-        content, dia, modific, owner} = req.body;
+        content, dia, modific, owner, _id} = req.body;
 
     const usuario = await User.findById(userData.id);
     console.log(usuario.emailList)
+
+    const post = await Post.findById(_id);
+    post.enviado = true;
+
+    await post.save();
 
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",

@@ -19,6 +19,7 @@ export default function ReadPage() {
 
     const [email, setEmail] = useState('');
     const [inList, setInList] = useState(false);
+    const [sent, setSent] = useState(false)
 
     useEffect(() => {
         if (!id) {
@@ -82,7 +83,8 @@ export default function ReadPage() {
         await axios.post('/enviar-email-teste', {
             ...post
         })
-
+        
+        setSent(true);
         alert('Publicação enviada.')
     }
 
@@ -119,7 +121,9 @@ export default function ReadPage() {
         <div className='mt-4 lg:px-8 sm:px-2'>
             {user?._id == post.owner._id ? (
                <div className="">
-                <button onClick={enviarEmail} className="m-1 py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Enviar email</button>
+                    {post.enviado ? (<h2 className="text-[#0047AB] py-2 px-4 border border-[#0047AB] rounded-2xl">Newsletter enviada</h2>) : (
+                        <button onClick={enviarEmail} className="m-1 py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Enviar email</button>
+                    )}
                     <a href={'/publicar/'+id} className="hover:no-undeline"><button className="m-1 py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Editar</button></a>
                     <button onClick={ev => setModal(true)} className="m-1 py-2 px-4 rounded rounded-lg bg-gray-800 text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Deletar</button>
                </div>
