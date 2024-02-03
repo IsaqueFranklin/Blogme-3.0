@@ -175,7 +175,7 @@ app.put('/publicar', async (req, res) => {
 })
 
 app.get('/posts', async (req, res) => {
-    res.json(await Post.find().populate('owner', ['username', 'followers']).sort({createdAt: -1}));
+    res.json(await Post.find().sort({dia: -1}).populate('owner', ['username', 'followers']).sort({createdAt: -1}));
 })
 
 app.get('/posts/:id', async (req, res) => {

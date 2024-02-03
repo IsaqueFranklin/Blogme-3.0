@@ -1,4 +1,5 @@
 import {Link} from 'react-router-dom';
+import { format } from "date-fns";
 
 export default function PostsGrid({places}) {
     return (

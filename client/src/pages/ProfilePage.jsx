@@ -154,7 +154,7 @@ export default function ProfilePage() {
 
     return (
         <div className='mb-24'>
-            {user ? (
+            {user?._id === usuario?._id ? (
                 <div className='border border-gray-800 rounded-2xl p-8 mt-12'>
                     <h2 className='text-2xl font-semibold text-[#0047AB] mb-4'>Bem-vindo, {user.name}!</h2>
                     <h2 className='text-lg'>Logado como {user.name} (@{user.username})</h2>

@@ -4,6 +4,8 @@ import { Navigate, useParams, Link } from 'react-router-dom';
 import {differenceInCalendarDays} from 'date-fns';
 import axios from 'axios';
 import PostsGrid from '../components/PostsGrid';
+import { format } from "date-fns";
+
 
 export default function HomePage() {
 
@@ -36,9 +38,33 @@ export default function HomePage() {
     if (ready && !user && !redirect) {
         return (
             <div className='mb-16'>
-                <p className='text-2xl text-left mt-8'>Publicações mais curtidas</p>
+                <p className="text-[#0047AB] py-2 px-4 border border-[#0047AB] rounded-2xl mt-12">Publicações em destaque</p>
+                <div className='lg:grid lg:grid-cols-3 gap-6 mt-8'>
+                        {places.length > 0 && places.slice(0,3).map((post, i) => {
+                                return (
+                                    <div className='border border-[#0047AB] rounded-2xl p-4 text-left mt-4' key={i}>
+                                    <Link to={'/post/'+post._id+'/'+post.title}>
+                                        
+                                            <div className='flex mb-4'>
+                                                <img key={i}
+                                                    src={'http://localhost:4000/uploads/'+post.photos[0]}
+                                                    alt="image"
+                                                    className="object-cover aspect-square rounded-2xl"
+                                                />
+                                            </div>
+                                            <h2 className='mb-2'>{post.title}</h2>
+                                            <h3 className='text-sm text-gray-700 mb-2'>{post.description}</h3> 
+                                            <p className="text-sm">Escrito por <Link to={'/perfil/'+post.owner.username} className='text-[#0047AB]'>@{post.owner.username}</Link> em {format(new Date(post.dia), 'dd/MM/yyyy')}</p>
+                                        
+                                    </Link>
+                                    </div>
+                                )
+                        })}
+
+                </div>
+                <p className="text-[#0047AB] py-2 px-4 border border-[#0047AB] rounded-2xl mt-12">Publicações mais curtidas</p>
                 <PostsGrid places={places.filter(place => place.likes.length > 0)} />
-                <p className='text-2xl text-left mt-8'>Publicações mais recentes</p>
+                <p className="text-[#0047AB] py-2 px-4 border border-[#0047AB] rounded-2xl mt-12">Publicações mais recentes</p>
                 <PostsGrid places={places.filter(place => differenceInCalendarDays(new Date(), new Date(place.dia)) <= 5)} />
             </div>
         )
@@ -50,8 +76,31 @@ export default function HomePage() {
 
     if (user) {
         return (
-            <div className='text-center mx-auto mb-16'>
-                
+                <div className='mx-auto mb-16'>
+                <p className="text-[#0047AB] py-2 px-4 border border-[#0047AB] rounded-2xl mt-12">Publicações em destaque</p>
+                <div className='lg:grid lg:grid-cols-3 gap-6 mt-8'>
+                        {places.length > 0 && places.slice(0,3).map((post, i) => {
+                                return (
+                                    <div className='border border-[#0047AB] rounded-2xl p-4 text-left mt-4' key={i}>
+                                    <Link to={'/post/'+post._id+'/'+post.title}>
+                                        
+                                            <div className='flex mb-4'>
+                                                <img key={i}
+                                                    src={'http://localhost:4000/uploads/'+post.photos[0]}
+                                                    alt="image"
+                                                    className="object-cover aspect-square rounded-2xl"
+                                                />
+                                            </div>
+                                            <h2 className='mb-2'>{post.title}</h2>
+                                            <h3 className='text-sm text-gray-700 mb-2'>{post.description}</h3> 
+                                            <p className="text-sm">Escrito por <Link to={'/perfil/'+post.owner.username} className='text-[#0047AB]'>@{post.owner.username}</Link> em {format(new Date(post.dia), 'dd/MM/yyyy')}</p>
+                                        
+                                    </Link>
+                                    </div>
+                                )
+                        })}
+
+                </div>
                 <p className="text-[#0047AB] py-2 px-4 border border-[#0047AB] rounded-2xl mt-12">Publicações mais curtidas</p>
                 <PostsGrid places={places.filter(place => place.likes.length > 0)} />
                 <p className="text-[#0047AB] py-2 px-4 border border-[#0047AB] rounded-2xl mt-12">Publicações mais recentes</p>

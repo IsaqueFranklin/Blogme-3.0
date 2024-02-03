@@ -29,7 +29,7 @@ export default function LoginPage() {
     }
 
     if (redirect) {
-        return <Navigate to={'/perfil/'+user.username} />
+      return <Navigate to={'/'} />
     }
 
     return (
