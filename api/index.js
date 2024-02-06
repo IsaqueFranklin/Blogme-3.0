@@ -12,6 +12,8 @@ const fs = require('fs');
 const nodemailer = require("nodemailer");
 require('dotenv').config();
 
+const stripe = require('stripe')('sk_test_51KK5CELeRAZuSlA6ryOQ7MPiiEFU9y6qeEwb1yraDAtxdtHdTkYhqSMFjiMTrQfmkkdOmB8o1QY0AYuVJwbMHZar00SXlDis6y');
+
 const app = express();
 
 //Salt and JWT secret
@@ -336,6 +338,50 @@ app.post('/enviar-email-teste', async (req, res) => {
     res.json();
 })
 
+const priceId = 'price_1Ogb4DLeRAZuSlA6uPR9o4DJ';
+app.post('/create-checkout-session', async (req, res) => {
+    const {_id} = req.body;
+    const session = await stripe.checkout.sessions.create({
+      ui_mode: 'embedded',
+      line_items: [
+        {
+          // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+          price: priceId,
+          quantity: 1,
+        },
+      ],
+      mode: 'subscription',
+      return_url: `${'http://localhost:5173'}/return?session_id={CHECKOUT_SESSION_ID}`,
+    });
+  
+    res.send({clientSecret: session.client_secret});
+  });
+  
+app.get('/session-status', async (req, res) => {
+    const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
+  
+    res.send({
+      status: session.status,
+      customer_email: session.customer_details.email
+    });
+});
+
+app.post('/create-checkout-session2', async (req, res) => {
+    const session = await stripe.checkout.sessions.create({
+      line_items: [
+        {
+          // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+          price: 'price_1Ogb4DLeRAZuSlA6uPR9o4DJ',
+          quantity: 1,
+        },
+      ],
+      mode: 'subscription',
+      success_url: `${'http://localhost:5173'}?success=true`,
+      cancel_url: `${'http://localhost:5173'}?canceled=true`,
+    });
+  
+    res.redirect(303, session.url);
+});
 //Starting the server
 
 app.listen(4000, () => {

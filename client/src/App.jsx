@@ -14,6 +14,9 @@ import ProfilePage from './pages/ProfilePage';
 import EditProfilePage from './pages/EditProfilePage';
 import BecomePremiumPage from './pages/BecomePremiumPage';
 import PainelPage from './pages/PainelPage';
+import WelcomeProPage from './pages/WelcomeProPage';
+import {Return} from './pages/BecomePremiumPage';
+import CheckoutForm from './pages/BecomePremiumPage';
 
 axios.defaults.baseURL = 'http://localhost:4000';
 axios.defaults.withCredentials = true;
@@ -33,8 +36,10 @@ function App() {
             <Route path='/post/:id/:title' element={ <ReadPage /> } />
             <Route path='/perfil/:username' element={ <ProfilePage /> } />
             <Route path='/editar/:id/:username' element={ <EditProfilePage /> } />
-            <Route path='/premium/:id' element={ <BecomePremiumPage /> } />
+            <Route path='/premium/:id' element={ <CheckoutForm /> } />
             <Route path='/painel/:id' element={ <PainelPage /> } />
+            <Route path="/checkout" element={<CheckoutForm />} />
+            <Route path="/return" element={<Return />} />
           </Route>
         </Routes>
       </UserContextProvider>
