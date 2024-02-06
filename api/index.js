@@ -366,22 +366,6 @@ app.get('/session-status', async (req, res) => {
     });
 });
 
-app.post('/create-checkout-session2', async (req, res) => {
-    const session = await stripe.checkout.sessions.create({
-      line_items: [
-        {
-          // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-          price: 'price_1Ogb4DLeRAZuSlA6uPR9o4DJ',
-          quantity: 1,
-        },
-      ],
-      mode: 'subscription',
-      success_url: `${'http://localhost:5173'}?success=true`,
-      cancel_url: `${'http://localhost:5173'}?canceled=true`,
-    });
-  
-    res.redirect(303, session.url);
-});
 //Starting the server
 
 app.listen(4000, () => {
