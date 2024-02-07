@@ -64,12 +64,12 @@ export function Return(){
     const sessionId = urlParams.get('session_id');
 
     axios.get(`/session-status?session_id=${sessionId}`, {
-      user
+      method: 'POST'
     }).then(response => {
         setStatus(response.data.status);
         setCustomerEmail(response.data.customer_email);
     });
-  }, [user]);
+  }, []);
 
   if (status === 'open') {
     return (
@@ -80,7 +80,6 @@ export function Return(){
   if (status === 'complete') {
 
     async function becomePro(){
-
       await axios.post('/become-pro', {user});
     }
 

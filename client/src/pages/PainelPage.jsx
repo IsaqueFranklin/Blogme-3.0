@@ -13,6 +13,8 @@ export default function PainelPage(){
     const [places, setPlaces] = useState([]);
     const [modal, setModal] = useState(false);
 
+    const [redirect, setRedirect] = useState(false);
+
     useEffect(() => {
         if(user){
             axios.get('/posts/'+user._id).then(response => {
@@ -21,27 +23,24 @@ export default function PainelPage(){
         }
     }, [])
 
-    async function deletePost(ev) {
+    async function cancelPro(ev) {
         ev.preventDefault();
-        if (id) {
-            await axios.post('/deletar/', {
-                id, ...post
-            })
-            setRedirect(true);
-        }
+        setRedirect(true);
+        await axios.post('/cancel-pro/')
     }
 
-    async function enviarEmail(poste){
-        await axios.post('/enviar-email-teste', {
-            poste
-        })
+    if(redirect){
+        return <Navigate to={'/'} />
     }
 
     if(modal) {
+        if(redirect){
+            return <Navigate to={'/perfil/'+user?.username} />
+        }
         return (
             <div className="items-center my-auto text-center">
                 <h2 className="text-2xl text-primary text-center font-semibold mb-8">Tem certeza que deseja cancelar sua conta PRO?</h2>
-                <button onClick={deletePost} className="m-1 py-2 px-4 rounded rounded-lg bg-primary text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Sim</button>
+                <button onClick={cancelPro} className="m-1 py-2 px-4 rounded rounded-lg bg-primary text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Sim</button>
                 <button onClick={ev => setModal(false)} className="m-1 py-2 px-4 rounded rounded-lg bg-gray-800 text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Não tenho certeza</button>
             </div>
         )

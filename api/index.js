@@ -377,13 +377,17 @@ app.get('/session-status', async (req, res) => {
 app.post('/become-pro', async (req, res) => {
     const userData = await getUserDataFromReq(req);
     const {_id} = req.body;
+    console.log(userData.id)
+    console.log(_id)
+
+    const userDoc = await User.findById(userData.id);
+
+    userDoc.superUser = true;
+
+    await userDoc.save();
 
     if(_id === userData.id){
-        const userDoc = await User.findById(userData.id);
-
-        userDoc.superUser = true;
-
-        await userDoc.save();
+        
     }
 })
 
@@ -394,7 +398,7 @@ app.post('/cancel-pro', async (req, res) => {
     if(_id === userData._id){
         const userDoc = await User.findById(userData.id);
 
-        await stripe.subscriptions.cancel(
+        const session = await stripe.subscriptions.cancel(
             userDoc.subs_id
         );
 
@@ -402,6 +406,8 @@ app.post('/cancel-pro', async (req, res) => {
         userDoc.superUser = false;
 
         await userDoc.save();
+
+        res.send({status: session.status})
     }
 })
 
