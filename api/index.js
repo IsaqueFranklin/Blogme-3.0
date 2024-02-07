@@ -340,7 +340,6 @@ app.post('/enviar-email-teste', async (req, res) => {
 
 const priceId = 'price_1Ogb4DLeRAZuSlA6uPR9o4DJ';
 app.post('/create-checkout-session', async (req, res) => {
-    const {_id} = req.body;
     const session = await stripe.checkout.sessions.create({
       ui_mode: 'embedded',
       line_items: [
@@ -355,16 +354,56 @@ app.post('/create-checkout-session', async (req, res) => {
     });
   
     res.send({clientSecret: session.client_secret});
+
   });
   
 app.get('/session-status', async (req, res) => {
+    const userData = await getUserDataFromReq(req);
+    console.log(userData.id)
+
     const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-  
+
+    const userDoc = await User.findById(userData.id);
+    userDoc.subs_id = session.subscription;
+
+    await userDoc.save();
+
     res.send({
       status: session.status,
       customer_email: session.customer_details.email
     });
 });
+
+app.post('/become-pro', async (req, res) => {
+    const userData = await getUserDataFromReq(req);
+    const {_id} = req.body;
+
+    if(_id === userData.id){
+        const userDoc = await User.findById(userData.id);
+
+        userDoc.superUser = true;
+
+        await userDoc.save();
+    }
+})
+
+app.post('/cancel-pro', async (req, res) => {
+    const userData = await getUserDataFromReq(req);
+    const {_id} = req.body;
+
+    if(_id === userData._id){
+        const userDoc = await User.findById(userData.id);
+
+        await stripe.subscriptions.cancel(
+            userDoc.subs_id
+        );
+
+        userDoc.subs_id = '';
+        userDoc.superUser = false;
+
+        await userDoc.save();
+    }
+})
 
 //Starting the server
 

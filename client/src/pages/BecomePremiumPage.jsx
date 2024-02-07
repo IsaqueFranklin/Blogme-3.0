@@ -1,16 +1,14 @@
 import {useState, useEffect, useContext} from 'react';
 import axios from 'axios';
 import { UserContext } from '../UserContext';
-import { useParams } from 'react-router-dom';
 import {loadStripe} from '@stripe/stripe-js';
 import {
   EmbeddedCheckoutProvider,
   EmbeddedCheckout
 } from '@stripe/react-stripe-js';
 import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
+  useParams,
+  Link,
   Navigate
 } from "react-router-dom";
 
@@ -23,6 +21,10 @@ const stripePromise = loadStripe("pk_test_51KK5CELeRAZuSlA6x2PMbkM4SRrSYXDqZrkRk
 export default function CheckoutForm(){
   const [clientSecret, setClientSecret] = useState('');
 
+  const {ready, user, setUser} = useContext(UserContext);
+
+  const {id} = useParams();
+
   useEffect(() => {
     // Create a Checkout Session as soon as the page loads
     axios.post("/create-checkout-session", {
@@ -32,23 +34,29 @@ export default function CheckoutForm(){
     })
   }, []);
 
-  return (
-    <div id="checkout" className=''>
-      {clientSecret && (
-        <EmbeddedCheckoutProvider
-          stripe={stripePromise}
-          options={{clientSecret}}
-        >
-          <EmbeddedCheckout />
-        </EmbeddedCheckoutProvider>
-      )}
-    </div>
-  )
+  if(id && user){
+    return (
+      <div id="checkout" className=''>
+        {clientSecret && (
+          <EmbeddedCheckoutProvider
+            stripe={stripePromise}
+            options={{clientSecret}}
+          >
+            <EmbeddedCheckout />
+          </EmbeddedCheckoutProvider>
+        )}
+      </div>
+    )
+  }
 }
 
 export function Return(){
   const [status, setStatus] = useState(null);
   const [customerEmail, setCustomerEmail] = useState('');
+
+  const {ready, user, setUser} = useContext(UserContext);
+
+  const {id} = useParams();
 
   useEffect(() => {
     const queryString = window.location.search;
@@ -56,12 +64,12 @@ export function Return(){
     const sessionId = urlParams.get('session_id');
 
     axios.get(`/session-status?session_id=${sessionId}`, {
-      method: "POST",
+      user
     }).then(response => {
         setStatus(response.data.status);
         setCustomerEmail(response.data.customer_email);
     });
-  }, []);
+  }, [user]);
 
   if (status === 'open') {
     return (
@@ -70,29 +78,26 @@ export function Return(){
   }
 
   if (status === 'complete') {
-    return (
-      <section id="success">
-        <p>
-          We appreciate your business! A confirmation email will be sent to {customerEmail}.
 
-          If you have any questions, please email <a href="mailto:orders@example.com">orders@example.com</a>.
-        </p>
-      </section>
+    async function becomePro(){
+
+      await axios.post('/become-pro', {user});
+    }
+
+    if(!user.superUser){
+      becomePro();
+    }
+
+    return (
+      <div className='py-12 px-8 mx-auto my-auto'>
+        <div className='text-center border border-gray-700 rounded-2xl py-8 px-6 my-auto' id="success">
+          <h2 className='text-2xl mb-4'>Bem-vindo(a) ao lado PRO!</h2>
+          <p className=''>Agora você é um usuário PRO e pode desfrutar de todos os melhores recursos disponíveis na plataforma.</p>
+          <Link to={'/painel/'+user?._id}><button className='mt-8 py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm hover:bg-white hover:text-black'>Avançar</button></Link>
+        </div>
+      </div>
     )
   }
 
   return null;
-}
-
-const App = () => {
-  return (
-    <div className="App">
-      <Router>
-        <Routes>
-          <Route path="/checkout" element={<CheckoutForm />} />
-          <Route path="/return" element={<Return />} />
-        </Routes>
-      </Router>
-    </div>
-  )
 }

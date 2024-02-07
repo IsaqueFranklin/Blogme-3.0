@@ -7,13 +7,14 @@ const UserSchema = new Schema({
     email: {type:String, unique:true},
     bio: String,
     instaLink: String,
-    externLink: String,
+    externLink: {type:String, default: ''},
     password: String,
     photo: [String],
     following: [mongoose.Schema.Types.ObjectId],
     followers: [mongoose.Schema.Types.ObjectId],
     emailList: [String],
     superUser: {type:Boolean, default:false},
+    subs_id: {type:String, default: ''},
     superSuperUser: {type:Number, default:0},
 })
 

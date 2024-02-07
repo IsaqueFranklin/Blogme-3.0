@@ -11,6 +11,7 @@ export default function PainelPage(){
 
     const {id} = useParams();
     const [places, setPlaces] = useState([]);
+    const [modal, setModal] = useState(false);
 
     useEffect(() => {
         if(user){
@@ -20,10 +21,30 @@ export default function PainelPage(){
         }
     }, [])
 
+    async function deletePost(ev) {
+        ev.preventDefault();
+        if (id) {
+            await axios.post('/deletar/', {
+                id, ...post
+            })
+            setRedirect(true);
+        }
+    }
+
     async function enviarEmail(poste){
         await axios.post('/enviar-email-teste', {
             poste
         })
+    }
+
+    if(modal) {
+        return (
+            <div className="items-center my-auto text-center">
+                <h2 className="text-2xl text-primary text-center font-semibold mb-8">Tem certeza que deseja cancelar sua conta PRO?</h2>
+                <button onClick={deletePost} className="m-1 py-2 px-4 rounded rounded-lg bg-primary text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Sim</button>
+                <button onClick={ev => setModal(false)} className="m-1 py-2 px-4 rounded rounded-lg bg-gray-800 text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Não tenho certeza</button>
+            </div>
+        )
     }
 
     if(user?.superUser === true){
@@ -74,6 +95,10 @@ export default function PainelPage(){
                         <PostsGrid places={places.filter(us => us.enviado === true)} className='mt-16' />
                     </div>
                 ) : ''}
+
+                <div className='mt-24'>
+                    <button onClick={ev => setModal(true)} className='py-2 px-3 text-sm rounded rounded-lg bg-primary text-white hover:bg-white hover:text-black'>Cancelar conta PRO</button>
+                </div>
             </div>
         )
     } else {
