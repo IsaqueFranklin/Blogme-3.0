@@ -35,7 +35,7 @@ export default function PainelPage(){
 
     if(modal) {
         if(redirect){
-            return <Navigate to={'/perfil/'+user?.username} />
+            return <Navigate to={'/'} />
         }
         return (
             <div className="items-center my-auto text-center">
