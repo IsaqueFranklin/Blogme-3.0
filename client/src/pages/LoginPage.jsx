@@ -112,7 +112,7 @@ export default function LoginPage() {
             <p className="mt-10 text-center text-sm text-gray-500">
               Ainda não tem uma conta?{' '}
               <a href="/register" className="font-semibold leading-6 text-[#0047AB] hover:text-gray-700">
-                Torne-se um membro
+                Escreva com a Blogme
               </a>
             </p>
           </div>

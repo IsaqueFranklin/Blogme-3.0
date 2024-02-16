@@ -18,14 +18,24 @@ export default function RegisterPage() {
     const [senhatamanho, setSenhatamanho] = useState(false);
     const [modal, setModal] = useState(false);
 
+    const [code, setCode] = useState('');
+    const [codes, setCodes] =  useState('');
+    const [verifyEmail, setVerifyEmail] = useState(false);
+    
+    const absoluta = 0;
+
     useEffect(() => {
       axios.get('/users').then(response => {
         setUsers(response.data);
         matchUsername();
         matchEmail();
-        senhaTam()
+        senhaTam();
       })
     })
+
+    useEffect(() => {
+      randomCode();
+    }, [absoluta])
 
     function matchUsername() {
       users?.map((u) => {
@@ -57,24 +67,56 @@ export default function RegisterPage() {
       }
     }
 
+    function randomCode(){
+      const codey = Math.floor(100000 + Math.random() * 900000);
+      setCodes(codey);
+    }
+
+    async function verify_Email(ev){
+      ev.preventDefault();
+      
+      if(repeatedUsername || repeatedEmail) {
+        return;
+      } else {
+        try {
+          setVerifyEmail(true);
+          await axios.post('/confirmar-email', {
+            name,
+            username,
+            email,
+            password,
+            codes,
+          });
+          
+          //alert('O cadastro foi bem sucedido, faça seu login novamente.')
+        } catch (e) {
+            console.log(e);
+        }
+      }
+    }
+
     async function registerUser(ev) {
         ev.preventDefault();
         if(repeatedUsername || repeatedEmail) {
           return;
         } else {
-          try {
-            await axios.post('/cadastro', {
-                name,
-                username,
-                email,
-                password,
-            });
-            setRedirect('/login')
-            
-            alert('O cadastro foi bem sucedido, faça seu login novamente.')
-          } catch (e) {
-              console.log(e);
-              alert('O cadastro falhou, tente novamente mais tarde.')
+          if(code.toString() === codes.toString()){
+            try {
+              await axios.post('/cadastro', {
+                  name,
+                  username,
+                  email,
+                  password,
+              });
+              setRedirect('/login')
+              
+              alert('O cadastro foi bem sucedido, faça seu login novamente.')
+            } catch (e) {
+                console.log(e);
+                alert('O cadastro falhou, tente novamente mais tarde.')
+            }
+          } else {
+             alert('Código errado.')
           }
         }
     }
@@ -83,6 +125,52 @@ export default function RegisterPage() {
         return (
             <Navigate to={redirect} />
         )
+    }
+
+    if(verifyEmail){
+      return (
+        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+          <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+            <img
+              className="mx-auto h-24 w-auto"
+              src="/BlogmeFito"
+              alt="Blogme"
+            />
+            <h2 className="mt-2 text-center text-lg font-semibold leading-9 tracking-tight text-gray-900">
+              Valide seu email para terminar de criar a sua conta na Blogme
+            </h2>
+          </div>
+
+          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+            <form onSubmit={registerUser} className="space-y-6" action="#" method="POST">
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                  Um código foi enviado para seu email 
+                </label>
+                <div className="mt-2">
+                  <input
+                    value={code}
+                    onChange={ev => setCode(ev.target.value)}
+                    id="code"
+                    name="code"
+                    type="number"
+                    required
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+              <div>
+                <button
+                    type="submit"
+                    className="flex w-full justify-center rounded-md bg-[#0047AB] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Validar email
+                  </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )
     }
 
     return (
@@ -113,7 +201,7 @@ export default function RegisterPage() {
           </div>
   
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form onSubmit={registerUser} className="space-y-6" action="#" method="POST">
+            <form onSubmit={verify_Email} className="space-y-6" action="#" method="POST">
             <div>
                 <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                   Nome completo
