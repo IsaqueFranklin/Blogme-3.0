@@ -31,9 +31,9 @@ export default function HomePage() {
         window.location.reload();
     }
 
-    if (!ready) {
+    {/*if (!ready) {
         return 'Carregando...'
-    };
+    };*/}
 
     if (ready && !user && !redirect) {
         return (
