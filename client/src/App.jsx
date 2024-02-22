@@ -18,7 +18,7 @@ import WelcomeProPage from './pages/WelcomeProPage';
 import {Return} from './pages/BecomePremiumPage';
 import CheckoutForm from './pages/BecomePremiumPage';
 
-axios.defaults.baseURL = 'http://localhost:4000';
+axios.defaults.baseURL = 'https://blogme-3-0.onrender.com';
 axios.defaults.withCredentials = true;
 
 function App() {
