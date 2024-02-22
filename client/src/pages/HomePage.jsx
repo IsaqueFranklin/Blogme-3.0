@@ -24,12 +24,12 @@ export default function HomePage() {
         }) 
     }, [])
 
-    async function logout() {
+    {/*async function logout() {
         await axios.post('/logout');
         setRedirect('/');
         setUser(null);
         window.location.reload();
-    }
+    }*/}
 
     if (!ready) {
         return 'Carregando...'

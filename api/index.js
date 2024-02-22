@@ -456,5 +456,5 @@ app.post('/cancel-pro', async (req, res) => {
 //Starting the server
 
 app.listen(4000, () => {
-    console.log('Servidor online.')
+    console.log('Servidor online.');
 })
