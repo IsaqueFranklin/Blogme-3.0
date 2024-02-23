@@ -11,7 +11,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
 import { UserContext } from '../UserContext';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 
 const opções = [
@@ -31,13 +31,18 @@ function classNames(...classes) {
 export default function Header() {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [redirect, setRedirect] = useState(false)
 
   const {ready, user, setUser} = useContext(UserContext);
 
   async function logout() {
     await axios.post('/logout');
-    //setRedirect('/');
+    setRedirect(true);
     setUser(null);
+  }
+
+  if(redirect){
+    return <Navigate to={'/login'} />
   }
 
   return (
@@ -142,40 +147,40 @@ export default function Header() {
 
           {user ? (
             <>
-              <a href="/publicar" className="text-sm font-semibold leading-6 text-gray-900">
+              <Link to={"/publicar"} className="text-sm font-semibold leading-6 text-gray-900">
                 Publicar
-              </a>
-              <a href={"/perfil/"+user.username} className="text-sm font-semibold leading-6 text-gray-900">
+              </Link>
+              <Link to={"/perfil/"+user.username} className="text-sm font-semibold leading-6 text-gray-900">
                 Meu perfil
-              </a>
+              </Link>
             </>
           ) : (
             <>
-              <a href="/" className="text-sm font-semibold leading-6 text-gray-900">
+              <Link to={"/"} className="text-sm font-semibold leading-6 text-gray-900">
                 Mais recentes
-              </a>
-              <a href="/register" className="text-sm font-semibold leading-6 text-gray-900">
+              </Link>
+              <Link to={"/register"} className="text-sm font-semibold leading-6 text-gray-900">
                 Começar a escrever
-              </a>
+              </Link>
             </>
           )}
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           {user ? 
-            (<button href="/login" onClick={logout} className="bg-white text-sm font-semibold leading-6 text-gray-900">
+            (<button onClick={() => logout()} className="bg-white text-sm font-semibold leading-6 text-gray-900">
                 Logout <span aria-hidden="true">&rarr;</span>
             </button>)
           : 
-            (<a href="/login" className="text-sm font-semibold leading-6 text-gray-900">
+            (<Link to={"/login"} className="text-sm font-semibold leading-6 text-gray-900">
                 Login <span aria-hidden="true">&rarr;</span>
-            </a>)}
+            </Link>)}
         </div>
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
         <div className="fixed inset-0 z-10" />
         <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
-            <a href="#" className="-m-1.5 p-1.5">
+            <a href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Blogme</span>
               <img
                 className="h-16 w-auto"
@@ -223,15 +228,15 @@ export default function Header() {
                     </>
                   )}
                 </Disclosure>
-                <a href="/publicar" className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                <Link to={"/publicar"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
                   Publicar
-                </a>
-                <a href={"/perfil/"+user.username} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                </Link>
+                <Link to={"/perfil/"+user.username} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
                   Meu perfil
-                </a>
+                </Link>
               </div>
               <div className="py-6">
-              <button href="/login" onClick={logout} className="bg-white text-sm font-semibold leading-6 text-gray-900">
+              <button onClick={() => logout()} className="bg-white text-sm font-semibold leading-6 text-gray-900">
                   Logout <span aria-hidden="true">&rarr;</span>
               </button>
               </div>
@@ -264,20 +269,20 @@ export default function Header() {
                     </>
                   )}
                 </Disclosure>
-                <a href="/" className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                <Link to={"/"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
                   Mais recentes
-                </a>
-                <a href="/register" className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                </Link>
+                <Link to={"/register"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
                   Começar a escrever
-                </a>
+                </Link>
               </div>
               <div className="py-6">
-                <a
-                  href="/login"
+                <Link
+                  to={"/login"}
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Login
-                </a>
+                </Link>
               </div>
                 </>
               )}
