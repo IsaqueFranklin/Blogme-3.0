@@ -146,7 +146,7 @@ export default function ReadPage() {
                     <div>
                         {post.photos?.[0] && (
                         <div>
-                            <img className='cursor-pointer object-cover' src={'http://localhost:4000/uploads/'+post.photos?.[0]} alt="" />
+                            <img className='cursor-pointer object-cover' src={import.meta.env.VITE_API_BASE_URL+'/uploads/'+post.photos?.[0]} alt="" />
                         </div>
                         )}
                     </div>
