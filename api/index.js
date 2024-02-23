@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname+'/uploads'));
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:8080', 'https://blogme-3-0.vercel.app', 'https://blogme-3-0-spa.onrender.com'],
+    origin: ['http://127.0.0.1:5173','http://localhost:5173', 'http://localhost:8080', 'https://blogme-3-0.vercel.app'],
     credentials: true, 
 }));
 
@@ -143,7 +143,7 @@ app.get('/profile', (req, res) => {
             res.json(null)
         }
     } catch (e) {
-        console.log('Error: '+e);
+        console.log(e);
     }
 })
 
@@ -216,7 +216,11 @@ app.put('/publicar', async (req, res) => {
 })
 
 app.get('/posts', async (req, res) => {
-    res.json(await Post.find().sort({dia: -1}).populate('owner', ['username', 'followers']).sort({createdAt: -1}));
+    try {
+        res.json(await Post.find().sort({dia: -1}).populate('owner', ['username', 'followers']).sort({createdAt: -1}));
+    } catch (err) {
+        throw err
+    }
 })
 
 app.get('/posts/:id', async (req, res) => {

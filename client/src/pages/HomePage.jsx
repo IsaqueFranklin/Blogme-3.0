@@ -22,7 +22,7 @@ export default function HomePage() {
         axios.get('/posts').then(response => {
             setPlaces([...response.data])
         }) 
-    }, [])
+    }, [user])
 
     {/*async function logout() {
         await axios.post('/logout');
@@ -40,7 +40,7 @@ export default function HomePage() {
             <div className='mb-16'>
                 <p className="text-[#0047AB] py-2 px-4 border border-[#0047AB] rounded-2xl mt-12">Publicações em destaque</p>
                 <div className='lg:grid lg:grid-cols-3 gap-6 mt-8'>
-                        {places.length > 0 && places.slice(0,3).map((post, i) => {
+                        {places?.length > 0 && places?.slice(0,3).map((post, i) => {
                                 return (
                                     <div className='border border-[#0047AB] rounded-2xl p-4 text-left mt-4' key={i}>
                                     <Link to={'/post/'+post._id+'/'+post.title}>
@@ -54,7 +54,7 @@ export default function HomePage() {
                                             </div>
                                             <h2 className='mb-2'>{post.title}</h2>
                                             <h3 className='text-sm text-gray-700 mb-2'>{post.description}</h3> 
-                                            <p className="text-sm">Escrito por <Link to={'/perfil/'+post.owner.username} className='text-[#0047AB]'>@{post.owner.username}</Link> em {format(new Date(post.dia), 'dd/MM/yyyy')}</p>
+                                            <p className="text-sm">Escrito por <Link to={'/perfil/'+post.owner?.username} className='text-[#0047AB]'>@{post.owner?.username}</Link> em {format(new Date(post.dia), 'dd/MM/yyyy')}</p>
                                         
                                     </Link>
                                     </div>
@@ -93,7 +93,7 @@ export default function HomePage() {
                                             </div>
                                             <h2 className='mb-2'>{post.title}</h2>
                                             <h3 className='text-sm text-gray-700 mb-2'>{post.description}</h3> 
-                                            <p className="text-sm">Escrito por <Link to={'/perfil/'+post.owner.username} className='text-[#0047AB]'>@{post.owner.username}</Link> em {format(new Date(post.dia), 'dd/MM/yyyy')}</p>
+                                            <p className="text-sm">Escrito por <Link to={'/perfil/'+post.owner?.username} className='text-[#0047AB]'>@{post.owner?.username}</Link> em {format(new Date(post.dia), 'dd/MM/yyyy')}</p>
                                         
                                     </Link>
                                     </div>
@@ -108,7 +108,7 @@ export default function HomePage() {
                 <p className="text-[#0047AB] py-2 px-4 border border-[#0047AB] rounded-2xl mt-12">Publicações de quem você segue</p>
                 <PostsGrid 
                     places={
-                        places.filter(place => place.owner.followers.includes(user._id))
+                        places.filter(place => place.owner?.followers.includes(user._id))
                     } 
                 />
             </div>

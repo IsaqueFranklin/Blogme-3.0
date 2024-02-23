@@ -123,7 +123,7 @@ export default function ReadPage() {
 
     return (
         <div className='mt-4 lg:px-8 sm:px-2'>
-            {user?._id == post.owner._id ? (
+            {user?._id == post.owner?._id ? (
                <div className="">
                     {user?.superUser ? post.enviado || sent ? (<h2 className="text-[#0047AB] py-2 px-4 border border-[#0047AB] rounded-2xl">Newsletter enviada</h2>) : (
                         <button onClick={enviarEmail} className="m-1 py-2 px-4 rounded rounded-lg bg-[#0047AB] text-white max-w-sm mt-2 mb-8 hover:bg-white hover:text-black">Enviar newsletter</button>
@@ -155,8 +155,8 @@ export default function ReadPage() {
             <div className="border-b">
                 <div className="mt-8">
                     <p className="">Escrito por:</p>
-                    <p className="text-xl">{post.owner.name}</p>
-                    <Link to={'/perfil/'+post.owner.username}><p className="text-[#0047AB] mb-8">@{post.owner.username}</p></Link>
+                    <p className="text-xl">{post.owner?.name}</p>
+                    <Link to={'/perfil/'+post.owner?.username}><p className="text-[#0047AB] mb-8">@{post.owner?.username}</p></Link>
                 </div>
                 <div className="flex mb-8 mt-4">
                     {post?.likes && user?._id ? 
@@ -186,12 +186,12 @@ export default function ReadPage() {
                 </div>
             </div>
             <div className='content text-lg lg:text-xl lg:leading-relaxed leading-normal font-serif text-gray-800 mb-8 mt-8' dangerouslySetInnerHTML={{__html:post.content}} />
-            {post.owner.superUser ? 
+            {post.owner?.superUser ? 
                 inList ?  (
                     <div className="my-16 border border-gray-700 rounded-2xl">
                         <div className="py-8 px-8">
                             <h2 className="text-2xl text-center mb-2 font-semibold text-[#0047AB]">Parabéns!</h2>
-                            <h2 className="text-lg text-center leading-6 text-gray-900 mb-2">Você está inscrito na lista de emails de <Link to={'/perfil/'+post.owner.username} className="text-[#0047AB]">@{post.owner.username}</Link>.</h2>
+                            <h2 className="text-lg text-center leading-6 text-gray-900 mb-2">Você está inscrito na lista de emails de <Link to={'/perfil/'+post.owner?.username} className="text-[#0047AB]">@{post.owner.username}</Link>.</h2>
                             <h3 className="text-center text-md leading-6 text-gray-900">Fique atento à sua caixa de entrada.</h3>
                         </div>
                     </div>
@@ -199,9 +199,9 @@ export default function ReadPage() {
                     <div className="my-16 border border-gray-700 rounded-2xl">
                         <form onSubmit={submitEmail} className="space-y-6" action="#" method="POST">
                         <div className="px-8 my-8">
-                            <h2 className="text-2xl mb-2">Inscreva-se na lista de emails de <Link to={'/perfil/'+post.owner.username} className="text-[#0047AB]">@{post.owner.username}</Link>.</h2>
+                            <h2 className="text-2xl mb-2">Inscreva-se na lista de emails de <Link to={'/perfil/'+post.owner?.username} className="text-[#0047AB]">@{post.owner?.username}</Link>.</h2>
                             <label htmlFor="email" className="block mb-6 text-md font-medium leading-6 text-gray-900">
-                            Se inscreva para receber as publicações de {post.owner.name} direto no seu email.
+                            Se inscreva para receber as publicações de {post.owner?.name} direto no seu email.
                             </label>
                             <div className="mt-2">
                             <input
@@ -229,10 +229,10 @@ export default function ReadPage() {
                             <img className='rounded-full lg:h-60 lg:w-60 md:h-60 md:w-60 h-48 w-48 mx-auto aspect-square' src={'http://localhost:4000/uploads/'+post.owner?.photo[0]} />
                         </div>
                         <div className='mt-8'>
-                            <h3 className='text-2xl'>{post.owner.name}</h3>
-                            <Link to={'/perfil/'+post.owner.username}><h2 className='font-semibold text-[#0047AB] mb-2'>@{post.owner.username}</h2></Link>
-                            <h3>{post.owner.bio}</h3>
-                            <Link to={'/perfil/'+post.owner.username}><button className="mt-6 text-white rounded-lg px-3 py-2 bg-[#0047AB] hover:bg-gray-700">Ver mais publicações</button></Link>
+                            <h3 className='text-2xl'>{post.owner?.name}</h3>
+                            <Link to={'/perfil/'+post.owner?.username}><h2 className='font-semibold text-[#0047AB] mb-2'>@{post.owner?.username}</h2></Link>
+                            <h3>{post.owner?.bio}</h3>
+                            <Link to={'/perfil/'+post.owner?.username}><button className="mt-6 text-white rounded-lg px-3 py-2 bg-[#0047AB] hover:bg-gray-700">Ver mais publicações</button></Link>
                         </div>
                     </div>
                 </div>
