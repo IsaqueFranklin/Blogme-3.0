@@ -72,18 +72,20 @@ export default function PublicarPage() {
             content, dia:new Date(),
         }
 
-        if(ready && user){
+        try {
             if (id) {
                 await axios.put('/publicar', {
                     id, ...postData
                 })
-                setRedirect(true);
             } else {
                 await axios.post('/publicar', {
                     ...postData
                 });
-                setRedirect(true);
             }
+            
+            setRedirect(true);
+        } catch (e){
+            console.log(e);
         }
     }
 
