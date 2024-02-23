@@ -42,15 +42,15 @@ export default function PublicarPage() {
     useEffect(() => {
         if(!id) {
             return;
+        } else {
+            axios.get('/post/'+id).then(response => {
+                const {data} = response;
+                setTitle(data.title);
+                setDescription(data.description);
+                setAddedPhotos(data.photos);
+                setContent(data.content);
+            })
         }
-
-        axios.get('/post/'+id).then(response => {
-            const {data} = response;
-            setTitle(data.title);
-            setDescription(data.description);
-            setAddedPhotos(data.photos);
-            setContent(data.content);
-        })
     }, [id])
 
 
