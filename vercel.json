@@ -1,6 +1,6 @@
 {
-    "buildCommand": "npm run build",
-    "outputDirectory": "client/",
+    "buildCommand": "cd client && yarn install && ./node_modules/v",
+    "outputDirectory": "client/dist",
     "framework": "vite",
     "rewrites": [
         {
