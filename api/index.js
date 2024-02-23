@@ -179,7 +179,8 @@ app.post('/upload', photosMiddleware.array('photos', 100), (req, res) => {
 })
 
 app.post('/publicar', async (req, res) => {
-    //const userData = await getUserDataFromReq(req);
+    const userData = await getUserDataFromReq(req);
+    console.log(userData)
     const {
         title, description, addedPhotos, 
         content, dia

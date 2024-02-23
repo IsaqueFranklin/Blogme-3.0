@@ -73,17 +73,19 @@ export default function PublicarPage() {
         }
 
         try {
-            if (id) {
-                await axios.put('/publicar', {
-                    id, ...postData
-                })
-            } else {
-                await axios.post('/publicar', {
-                    ...postData
-                });
+            if(ready && user){
+                if (id) {
+                    await axios.put('/publicar', {
+                        id, ...postData
+                    })
+                } else {
+                    await axios.post('/publicar', {
+                        ...postData
+                    });
+                }
+                
+                setRedirect(true);
             }
-            
-            setRedirect(true);
         } catch (e){
             console.log(e);
         }
