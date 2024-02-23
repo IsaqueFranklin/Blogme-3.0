@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname+'/uploads'));
 app.use(cors({
-    origin: ['https://blogme-3-frontend.vercel.app/', 'https://blogme3.netlify.app', 'http://localhost:5173', 'http://localhost:8080', 'https://blogme-3-0-spa.onrender.com', 'https://blogme-3-0.vercel.app'],
+    origin: ['https://blogme-3-frontend.vercel.app', 'https://blogme3.netlify.app', 'http://localhost:5173', 'http://localhost:8080', 'https://blogme-3-0-spa.onrender.com', 'https://blogme-3-0.vercel.app'],
     credentials: true, 
 }));
 
