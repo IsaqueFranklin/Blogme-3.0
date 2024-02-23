@@ -179,21 +179,26 @@ app.post('/upload', photosMiddleware.array('photos', 100), (req, res) => {
 })
 
 app.post('/publicar', async (req, res) => {
-    const userData = await getUserDataFromReq(req);
-    console.log(userData)
-    const {
-        title, description, addedPhotos, 
-        content, dia
-    } = req.body;
+    const {token} = req.cookies;
+    if(token){
+        const userData = await getUserDataFromReq(req);
+        console.log(userData)
+        const {
+            title, description, addedPhotos, 
+            content, dia
+        } = req.body;
 
-    Post.create({
-        title, description, photos:addedPhotos, 
-        content, dia, owner:userData.id,
-    }).then((doc) => {
-        res.json(doc);
-    }).catch((err => {
-        throw err;
-    }))
+        Post.create({
+            title, description, photos:addedPhotos, 
+            content, dia, owner:userData.id,
+        }).then((doc) => {
+            res.json(doc);
+        }).catch((err => {
+            throw err;
+        }))
+    } else {
+        res.json(null)
+    }
 })
 
 app.put('/publicar', async (req, res) => {
