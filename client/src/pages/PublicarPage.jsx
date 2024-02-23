@@ -74,12 +74,12 @@ export default function PublicarPage() {
 
         if(ready && user){
             if (id) {
-                await axios.put('/publicar', { withCredentials: true }, {
+                await axios.put('/publicar', { method: 'PUT', withCredentials: true }, {
                     id, ...postData
                 })
                 setRedirect(true);
             } else {
-                await axios.post('/publicar', { withCredentials: true }, {
+                await axios.post('/publicar', { method: 'POST', withCredentials: true }, {
                     ...postData
                 });
                 setRedirect(true);
