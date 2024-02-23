@@ -47,7 +47,7 @@ export default function HomePage() {
                                         
                                             <div className='flex mb-4'>
                                                 <img key={i}
-                                                    src={import.meta.env.VITE_API_BASE_URL+'/uploads/'+post.photos[0]}
+                                                    src={'http://localhost:4000/uploads/'+post.photos[0]}
                                                     alt="image"
                                                     className="object-cover aspect-square rounded-2xl"
                                                 />

@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname+'/uploads'));
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:8080', 'https://blogme-3-0-spa.onrender.com'],
+    origin: ['http://localhost:5173', 'http://localhost:8080', 'https://blogme-3-0.vercel.app/'],
     credentials: true, 
 }));
 
