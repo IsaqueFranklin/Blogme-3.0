@@ -71,17 +71,18 @@ export default function PublicarPage() {
             title, description, addedPhotos, 
             content, dia:new Date(),
         }
-        
-        setRedirect(true);
+
         if(ready && user){
             if (id) {
                 await axios.put('/publicar', {
                     id, ...postData
                 })
+                setRedirect(true);
             } else {
                 await axios.post('/publicar', {
                     ...postData
                 });
+                setRedirect(true);
             }
         }
     }
@@ -91,30 +92,32 @@ export default function PublicarPage() {
     }
 
 
-    return (
-        <div className='my-auto max-auto items-center mt-12'>
-            <form onSubmit={savePost}>
-                <h2 className='text-2xl mt-4 mb-4'>Título da sua publicação</h2>
-                <input type="text" value={title} onChange={ev => setTitle(ev.target.value)} placeholder='Um título de cair as calças...' />
-
-                <h2 className='text-2xl mt-12 mb-4'>Descrição da sua publicação</h2>
-                <input type="text" value={description} onChange={ev => setDescription(ev.target.value)} placeholder='Um descrição de abrir a boca...' /> 
-
-                        <h2 className='text-2xl mt-12 mb-4'>Fotos de capa</h2>
-                        <PhotosUploader addedPhotos={addedPhotos} onChange={setAddedPhotos} />
-
-                        <h2 className='text-2xl mt-12 mb-4'>Escreva aqui</h2>
-                        <ReactQuill
-                            value={content} 
-                            theme={'snow'}
-                            onChange={setContent} 
-                            modules={modules} 
-                            formats={formats} 
-                        />
-                        <div className='mb-10 mt-12'>
-                            <button className='py-2 px-4 w-full rounded rounded-lg bg-[#0047AB] text-white hover:bg-white hover:text-black my-4 mb-20'>Publicar</button>
-                        </div>
-                    </form>
-        </div>
-    )
+    if(ready && user){
+        return (
+            <div className='my-auto max-auto items-center mt-12'>
+                <form onSubmit={savePost}>
+                    <h2 className='text-2xl mt-4 mb-4'>Título da sua publicação</h2>
+                    <input type="text" value={title} onChange={ev => setTitle(ev.target.value)} placeholder='Um título de cair as calças...' />
+    
+                    <h2 className='text-2xl mt-12 mb-4'>Descrição da sua publicação</h2>
+                    <input type="text" value={description} onChange={ev => setDescription(ev.target.value)} placeholder='Um descrição de abrir a boca...' /> 
+    
+                            <h2 className='text-2xl mt-12 mb-4'>Fotos de capa</h2>
+                            <PhotosUploader addedPhotos={addedPhotos} onChange={setAddedPhotos} />
+    
+                            <h2 className='text-2xl mt-12 mb-4'>Escreva aqui</h2>
+                            <ReactQuill
+                                value={content} 
+                                theme={'snow'}
+                                onChange={setContent} 
+                                modules={modules} 
+                                formats={formats} 
+                            />
+                            <div className='mb-10 mt-12'>
+                                <button className='py-2 px-4 w-full rounded rounded-lg bg-[#0047AB] text-white hover:bg-white hover:text-black my-4 mb-20'>Publicar</button>
+                            </div>
+                        </form>
+            </div>
+        )
+    }
 }

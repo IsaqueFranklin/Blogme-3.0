@@ -197,23 +197,27 @@ app.post('/publicar', async (req, res) => {
 })
 
 app.put('/publicar', async (req, res) => {
-    const userData = await getUserDataFromReq(req);
-    const {
-        id, title, description, addedPhotos, 
-        content, dia
-    } = req.body;
+    if(token){
+        const userData = await getUserDataFromReq(req);
+        const {
+            id, title, description, addedPhotos, 
+            content, dia
+        } = req.body;
 
-    const postDoc = await Post.findById(id);
+        const postDoc = await Post.findById(id);
 
-    if(userData.id === postDoc.owner.toString()) {
-        postDoc.set({
-            title, description, photos:addedPhotos, 
-            content, modific:dia, owner:userData.id,
-        })
+        if(userData.id === postDoc.owner.toString()) {
+            postDoc.set({
+                title, description, photos:addedPhotos, 
+                content, modific:dia, owner:userData.id,
+            })
+        }
+
+        await postDoc.save();
+        res.json(postDoc);
+    } else {
+        res.json(null)
     }
-
-    await postDoc.save();
-    res.json(postDoc);
 })
 
 app.get('/posts', async (req, res) => {
