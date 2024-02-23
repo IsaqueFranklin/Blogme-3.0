@@ -197,6 +197,7 @@ app.post('/publicar', async (req, res) => {
 })
 
 app.put('/publicar', async (req, res) => {
+    const {token} = req.cookies;
     if(token){
         const userData = await getUserDataFromReq(req);
         const {
