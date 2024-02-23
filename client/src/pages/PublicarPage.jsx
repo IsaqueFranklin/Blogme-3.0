@@ -71,23 +71,18 @@ export default function PublicarPage() {
             title, description, addedPhotos, 
             content, dia:new Date(),
         }
-
-        try {
-            if(ready && user){
-                if (id) {
-                    await axios.put('/publicar', {
-                        id, ...postData
-                    })
-                } else {
-                    await axios.post('/publicar', {
-                        ...postData
-                    });
-                }
-                
-                setRedirect(true);
+        
+        setRedirect(true);
+        if(ready && user){
+            if (id) {
+                await axios.put('/publicar', {
+                    id, ...postData
+                })
+            } else {
+                await axios.post('/publicar', {
+                    ...postData
+                });
             }
-        } catch (e){
-            console.log(e);
         }
     }
 
