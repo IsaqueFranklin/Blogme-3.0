@@ -120,7 +120,7 @@ app.post('/login', async (req, res) => {
                 id:userDoc._id
             }, jwtSecret, {}, (err, token) => {
                 if (err) throw err;
-                res.cookies('token', token).json(userDoc);
+                res.cookie('token', token).json(userDoc);
             });
         } else {
             res.status(422).json('A senha não está correta.')
@@ -180,24 +180,30 @@ app.post('/upload', photosMiddleware.array('photos', 100), (req, res) => {
 
 app.post('/publicar', async (req, res) => {
     const {token} = req.cookies;
-    if(token){
-        const userData = await getUserDataFromReq(req);
-        console.log(userData)
-        const {
-            title, description, addedPhotos, 
-            content, dia
-        } = req.body;
+    try {
+        if (token) {
+            jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+                if (err) throw err;
+                console.log(userData)
+                const {
+                    title, description, addedPhotos, 
+                    content, dia
+                } = req.body;
 
-        Post.create({
-            title, description, photos:addedPhotos, 
-            content, dia, owner:userData.id,
-        }).then((doc) => {
-            res.json(doc);
-        }).catch((err => {
-            throw err;
-        }))
-    } else {
-        res.json(null)
+                Post.create({
+                    title, description, photos:addedPhotos, 
+                    content, dia, owner:userData.id,
+                }).then((doc) => {
+                    res.json(doc);
+                }).catch((err => {
+                    throw err;
+                }))
+            })
+        } else {
+            res.json(null)
+        }
+    } catch (e) {
+        console.log(e);
     }
 })
 
