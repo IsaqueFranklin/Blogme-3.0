@@ -192,7 +192,7 @@ app.post('/publicar', async (req, res) => {
 
         Post.create({
             title, description, photos:addedPhotos, 
-            content, owner:userData.id,
+            content, owner:userData.id, dia
         }).then(doc => {
             res.json(doc)
         }).catch(err => {
