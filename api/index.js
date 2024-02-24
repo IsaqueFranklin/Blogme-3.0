@@ -190,17 +190,14 @@ app.post('/publicar', async (req, res) => {
             content, dia
         } = req.body;
 
-        const postDoc = await Post.findById(id);
-
-        if(userData.id === postDoc.owner.toString()) {
-            postDoc.set({
-                title, description, photos:addedPhotos, 
-                content, owner:userData.id,
-            })
-        }
-
-        await postDoc.save();
-        res.json(postDoc);
+        Post.create({
+            title, description, photos:addedPhotos, 
+            content, owner:userData.id,
+        }).then(doc => {
+            res.json(doc)
+        }).catch(err => {
+            throw err;
+        })
     } else {
         res.json(null)
     }
